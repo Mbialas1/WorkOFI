@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.InterfaceRepository
+namespace OFI.Infrastructure.Helpers
 {
-    public interface ITaskRepository
+    internal class DBHelper
     {
+        public static string DB_CONNECTION = "DBTaskConnection";
     }
 }

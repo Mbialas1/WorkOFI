@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.InterfaceRepository
+namespace Core.Services.InterfaceServices
 {
-    public interface ITaskRepository
+    public interface ITaskService
     {
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities.User
 {
-    internal class User
+    public class User
     {
         public long Id { get; set; }
         public string UserName { get; set; }
