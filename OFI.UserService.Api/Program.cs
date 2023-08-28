@@ -1,5 +1,6 @@
 using Core.InterfaceRepository;
-using OFI.Infrastructure.Task;
+using Core.Services.InterfaceServices;
+using Core.Services.Services;
 using OFI.Infrastructure.User;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 app.Run();
