@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Entities.Task
 {
-    public class TaskModel
+    public class TaskAggregate
     {
         public long Id { get; set; }
         public long UserId { get; set; }
@@ -14,8 +14,9 @@ namespace Core.Entities.Task
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public Task BaseTask { get; set; }
-        public List<Task> SubTasks { get; set; }
-        public Task() { }
+        public TaskAggregate BaseTask { get; set; }
+        public List<TaskAggregate> SubTasks { get; set; }
+        public int Progress { get; set; }
+        public TaskAggregate() { }
     }
 }
