@@ -1,4 +1,7 @@
-﻿using Core.Services.InterfaceServices;
+﻿using Core.Application.Dtos;
+using Core.Enums;
+using Core.InterfaceRepository;
+using Core.Services.InterfaceServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +12,21 @@ namespace Core.Services.Services
 {
     public class TaskService : ITaskService
     {
-        private readonly ITaskService taskService;
-        public TaskService(ITaskService _taskService) 
+        private readonly ITaskRepository taskRepository;
+        public TaskService(ITaskRepository _taskRepository) 
         { 
-            taskService = _taskService;
+            taskRepository = _taskRepository;
+        }
+
+        public async Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardByUserId(int userId)
+        {
+            var tasks = await taskRepository.GetByUserIdAsync(userId);
+            return tasks.Select(task => new TaskForDashboardDto
+            {
+                Name = task.Name,
+                Description = task.Description,
+                TaskStatusStatus = (TaskStatusEnum)task.Progress
+            }).ToList();
         }
     }
 }
