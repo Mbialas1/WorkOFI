@@ -10,5 +10,6 @@ namespace Core.InterfaceRepository
     public interface ITaskRepository
     {
         Task<IEnumerable<TaskAggregate>> GetByUserIdAsync(int userId);
+        Task<TaskAggregate> AddAsync(TaskAggregate task);
     }
 }

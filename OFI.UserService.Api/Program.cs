@@ -10,9 +10,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 var app = builder.Build();
+app.MapControllers();
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
-//builder.Services.AddMediatR(typeof(CreateUserCommand).Assembly);
+//builder.Services.AddMediatR(typeof(AddTaskCommand).Assembly);
 
 app.Run();
