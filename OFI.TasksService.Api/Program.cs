@@ -7,6 +7,8 @@ using OFI.Infrastructure.Task;
 using MediatR;
 using Core.Entities.Task;
 using Microsoft.Extensions.DependencyInjection;
+using OFI.Infrastructure.Handlers;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +17,10 @@ builder.Services.AddScoped<ITaskRepository, TaskRepository>();
 builder.Services.AddScoped<ITaskService, TaskService>();
 
 builder.Services.AddControllers();
-
+builder.Services.AddTransient<AddTaskCommandHandler, AddTaskCommandHandler>();
 builder.Services.AddMediatR(cfg =>
 {
-    cfg.RegisterServicesFromAssembly(typeof(AddTaskCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(AddTaskCommandHandler).Assembly);
 });
 
 var app = builder.Build();
