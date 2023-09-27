@@ -1,5 +1,6 @@
 ﻿using Core.Application.Commands;
 using Core.Application.Dtos;
+using Core.Application.Queries;
 using Core.Dtos;
 using Core.Enums;
 using Core.InterfaceRepository;
@@ -43,6 +44,14 @@ namespace OFI.TasksService.Api.Controllers
                 return Ok($"Task {taskDto.Name} add successful");
 
             return BadRequest($"Task {taskDto.Name} can't be added");
+        }
+
+        [HttpGet("getTask/{taskId}")]
+        public async Task<IActionResult> GetTaskById(int taskId)
+        {
+            var query = new GetTaskByIdQuery(taskId);
+            var task = await mediator.Send(query);
+            return Ok(task);
         }
     }
 }

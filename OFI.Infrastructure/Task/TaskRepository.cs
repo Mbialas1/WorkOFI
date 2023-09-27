@@ -32,11 +32,16 @@ namespace OFI.Infrastructure.Task
             return task;
         }
 
+        public async Task<TaskAggregate> GetByIdAsync(int taskId)
+        {
+            var sql = "SELECT * FROM Tasks WHERE Id = @Id";
+            return await dbConnection.QuerySingleOrDefaultAsync<TaskAggregate>(sql, new { Id = taskId });
+        }
+
         public Task<IEnumerable<TaskAggregate>> GetByUserIdAsync(int userId)
         {
             throw new NotImplementedException();
         }
 
-        
     }
 }
