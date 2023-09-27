@@ -9,8 +9,17 @@ using Core.Entities.Task;
 using Microsoft.Extensions.DependencyInjection;
 using OFI.Infrastructure.Handlers;
 using System.Reflection;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .CreateLogger();
+
 
 // Add services to the container.
 builder.Services.AddScoped<ITaskRepository, TaskRepository>();

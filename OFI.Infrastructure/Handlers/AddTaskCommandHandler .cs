@@ -3,6 +3,7 @@ using Core.Entities.Task;
 using Core.InterfaceRepository;
 using Core.Services.InterfaceServices;
 using MediatR;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,15 +21,22 @@ namespace OFI.Infrastructure.Handlers
 
         public async Task<TaskAggregate> Handle(AddTaskCommand request, CancellationToken cancellationToken)
         {
-            var taskEntity = new TaskAggregate
+            try
             {
-                Name = request.TaskDto.Name,
-                Description = request.TaskDto.Description,
-                CreatedDate = request.TaskDto.Created
-                //Future: Add rest options
-            };
+                var taskEntity = new TaskAggregate
+                {
+                    Name = request.TaskDto.Name,
+                    Description = request.TaskDto.Description,
+                    CreatedDate = request.TaskDto.Created
+                    //Future: Add rest options
+                };
 
-            return await _taskRepository.AddAsync(taskEntity);
+                return await _taskRepository.AddAsync(taskEntity);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
