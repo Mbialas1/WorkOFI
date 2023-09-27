@@ -22,7 +22,14 @@ namespace OFI.Infrastructure.Handlers
 
         public async Task<IEnumerable<TaskForDashboardDto>> Handle(GetTasksForDashboardByUserIdQuery request, CancellationToken cancellationToken)
         {
-            return await _taskService.GetTaskForDashboardByUserId(request.UserId);
+            try
+            {
+                return await _taskService.GetTaskForDashboardByUserId(request.UserId);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }

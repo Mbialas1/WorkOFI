@@ -21,15 +21,22 @@ namespace OFI.Infrastructure.Handlers
 
         public async Task<TaskForDetailsDto> Handle(GetTaskByIdQuery request, CancellationToken cancellationToken)
         {
-            var taskEntity = await _taskRepository.GetByIdAsync(request.TaskId);
-
-            return new TaskForDetailsDto
+            try
             {
-                Id = taskEntity.Id,
-                Name = taskEntity.Name,
-                Description = taskEntity.Description,
-                CreatedDate = taskEntity.CreatedDate
-            };
+                var taskEntity = await _taskRepository.GetByIdAsync(request.TaskId);
+
+                return new TaskForDetailsDto
+                {
+                    Id = taskEntity.Id,
+                    Name = taskEntity.Name,
+                    Description = taskEntity.Description,
+                    CreatedDate = taskEntity.CreatedDate
+                };
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
