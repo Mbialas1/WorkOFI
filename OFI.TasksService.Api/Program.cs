@@ -32,8 +32,22 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(AddTaskCommandHandler).Assembly);
 });
 
-var app = builder.Build();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+        });
+});
 
+
+
+var app = builder.Build();
+app.UseCors("AllowAllOrigins");
 app.UseRouting();
 app.MapControllers();
 
