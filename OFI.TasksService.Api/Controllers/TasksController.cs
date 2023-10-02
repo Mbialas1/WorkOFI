@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using OFI.Infrastructure.Task;
 using Serilog;
 using Serilog.Data;
+using System.Runtime.CompilerServices;
 
 namespace OFI.TasksService.Api.Controllers
 {

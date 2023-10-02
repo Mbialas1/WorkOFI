@@ -1,0 +1,13 @@
+.add-task-dialog-container {
+    width: 300px;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+}

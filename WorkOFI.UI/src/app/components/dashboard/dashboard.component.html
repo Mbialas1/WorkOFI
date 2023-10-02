@@ -1,0 +1,11 @@
+<div class="dashboard-container">
+    <h2>Lista zadań</h2>
+    <ul class="task-list">
+        <li *ngFor="let task of tasks">
+            <a [routerLink]="['/task', task.id]">
+            <h3>{{ task.name }}</h3>
+            <p>{{ task.description }}</p>
+        </a>
+        </li>
+    </ul>
+</div>
