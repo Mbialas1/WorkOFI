@@ -1,3 +1,6 @@
 <button (click)="showTaskDetails = !showTaskDetails">Pokaż/Schowaj szczegóły zadania</button>
-
+<div class="nav-container">
+    <app-nav-menu></app-nav-menu>
+  </div>
+  <router-outlet></router-outlet>  
 <app-task-detail *ngIf="showTaskDetails"></app-task-detail>
