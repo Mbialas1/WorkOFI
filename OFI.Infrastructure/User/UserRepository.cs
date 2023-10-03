@@ -20,5 +20,20 @@ namespace OFI.Infrastructure.User
         {
             dbConnection = ConnectionHelper.GetSqlConnection(configuration);
         }
+
+        public System.Threading.Tasks.Task AddAsync(Core.Entities.User.User user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Core.Entities.User.User> GetAsync(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Core.Entities.User.User> GetByUsernameAsync(string username)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

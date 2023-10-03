@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,8 @@ namespace Core.InterfaceRepository
 {
     public interface IUserRepository
     {
+        Task<User> GetAsync(Guid id);
+        Task<User> GetByUsernameAsync(string username);
+        Task AddAsync(User user);
     }
 }
