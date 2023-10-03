@@ -27,7 +27,7 @@ namespace OFI.Infrastructure.Handlers
                 {
                     Name = request.TaskDto.Name,
                     Description = request.TaskDto.Description,
-                    CreatedDate = request.TaskDto.Created
+                    CreatedDate = DateTime.UtcNow
                     //Future: Add rest options
                 };
 
