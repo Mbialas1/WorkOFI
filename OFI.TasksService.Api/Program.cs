@@ -7,10 +7,10 @@ using OFI.Infrastructure.Task;
 using MediatR;
 using Core.Entities.Task;
 using Microsoft.Extensions.DependencyInjection;
-using OFI.Infrastructure.Handlers;
 using System.Reflection;
 using Serilog;
 using Serilog.Events;
+using OFI.Infrastructure.Handlers.Tasks.Commands;
 
 var builder = WebApplication.CreateBuilder(args);
 

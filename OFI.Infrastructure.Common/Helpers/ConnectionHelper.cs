@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace OFI.Infrastructure.Helpers
 {
-    internal class ConnectionHelper
+    public class ConnectionHelper
     {
-        internal static SqlConnection GetSqlConnection(IConfiguration configuration) 
+        public static SqlConnection GetSqlConnection(IConfiguration configuration) 
             => new SqlConnection(configuration.GetConnectionString(DBHelper.DB_CONNECTION));
     }
 }

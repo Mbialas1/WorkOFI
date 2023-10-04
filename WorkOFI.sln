@@ -5,9 +5,9 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "WorkOFI.UI", "WorkOFI.UI\WorkOFI.UI.esproj", "{D4700B61-556F-4166-8DAF-A88E3EDFD61B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{B6E3CA3C-3BBC-4680-8523-54A6C6C6004A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{B6E3CA3C-3BBC-4680-8523-54A6C6C6004A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Application", "Core.Application\Core.Application.csproj", "{41D5B9D9-70C0-48F2-905E-154E4BB4F6A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Application", "Core.Application\Core.Application.csproj", "{41D5B9D9-70C0-48F2-905E-154E4BB4F6A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domains", "Domains", "{53C40D29-A61E-41DB-B634-1997A5E0B38F}"
 EndProject
@@ -15,19 +15,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{F884C07B-8AE6-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{005179B0-7FBF-4162-870F-6C22D2D1B733}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFI.Infrastructure", "OFI.Infrastructure\OFI.Infrastructure.csproj", "{489A76CF-8802-4A56-9B9A-55F2D3CE48C0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OFI.Infrastructure", "OFI.Infrastructure\OFI.Infrastructure.csproj", "{489A76CF-8802-4A56-9B9A-55F2D3CE48C0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIs", "APIs", "{B8CF7768-EF1D-4850-BF1E-F5C4583650FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFI.UserService.Api", "OFI.UserService.Api\OFI.UserService.Api.csproj", "{26934FE6-BED0-4A0F-BCBF-005C6411AEC5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OFI.UserService.Api", "OFI.UserService.Api\OFI.UserService.Api.csproj", "{26934FE6-BED0-4A0F-BCBF-005C6411AEC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFI.TasksService.Api", "OFI.TasksService.Api\OFI.TasksService.Api.csproj", "{BCD004A6-5701-4D69-A4ED-1CC1EA4CB222}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OFI.TasksService.Api", "OFI.TasksService.Api\OFI.TasksService.Api.csproj", "{BCD004A6-5701-4D69-A4ED-1CC1EA4CB222}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{A589A626-DF2E-4B61-B1D9-1DA1D80E1253}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFI.Common", "OFI.Common\OFI.Common.csproj", "{E9A3921F-4BDB-46B5-B3F2-CA520F370C94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OFI.Common", "OFI.Common\OFI.Common.csproj", "{E9A3921F-4BDB-46B5-B3F2-CA520F370C94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFI.Infrastructure.Identity", "OFI.Infrastructure.Identity\OFI.Infrastructure.Identity.csproj", "{91E4AFEF-12FC-428D-ABC0-908C51754322}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OFI.Infrastructure.Identity", "OFI.Infrastructure.Identity\OFI.Infrastructure.Identity.csproj", "{91E4AFEF-12FC-428D-ABC0-908C51754322}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFI.Infrastructure.User", "OFI.Infrastructure.User\OFI.Infrastructure.User.csproj", "{A32F244F-9CE2-49CF-B2A4-06805B70CD8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFI.Infrastructure.Common", "OFI.Infrastructure.Common\OFI.Infrastructure.Common.csproj", "{B9D5CB50-AFAC-48B9-9008-E87FAF6F0EC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +73,14 @@ Global
 		{91E4AFEF-12FC-428D-ABC0-908C51754322}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{91E4AFEF-12FC-428D-ABC0-908C51754322}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{91E4AFEF-12FC-428D-ABC0-908C51754322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A32F244F-9CE2-49CF-B2A4-06805B70CD8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A32F244F-9CE2-49CF-B2A4-06805B70CD8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A32F244F-9CE2-49CF-B2A4-06805B70CD8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A32F244F-9CE2-49CF-B2A4-06805B70CD8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9D5CB50-AFAC-48B9-9008-E87FAF6F0EC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9D5CB50-AFAC-48B9-9008-E87FAF6F0EC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9D5CB50-AFAC-48B9-9008-E87FAF6F0EC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9D5CB50-AFAC-48B9-9008-E87FAF6F0EC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -82,6 +94,8 @@ Global
 		{BCD004A6-5701-4D69-A4ED-1CC1EA4CB222} = {B8CF7768-EF1D-4850-BF1E-F5C4583650FB}
 		{E9A3921F-4BDB-46B5-B3F2-CA520F370C94} = {A589A626-DF2E-4B61-B1D9-1DA1D80E1253}
 		{91E4AFEF-12FC-428D-ABC0-908C51754322} = {005179B0-7FBF-4162-870F-6C22D2D1B733}
+		{A32F244F-9CE2-49CF-B2A4-06805B70CD8D} = {005179B0-7FBF-4162-870F-6C22D2D1B733}
+		{B9D5CB50-AFAC-48B9-9008-E87FAF6F0EC7} = {005179B0-7FBF-4162-870F-6C22D2D1B733}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {83384FA3-9843-4034-B2C1-C81DCEB78A95}

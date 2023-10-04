@@ -1,4 +1,5 @@
-﻿using Core.InterfaceRepository;
+﻿using Core.Dtos;
+using Core.InterfaceRepository;
 using Core.Services.InterfaceServices;
 using System;
 using System.Collections.Generic;
