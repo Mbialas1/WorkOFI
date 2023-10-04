@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OFI.Infrastructure.Handlers
+namespace OFI.Infrastructure.Handlers.Tasks.Queries
 {
     public class GetTaskByIdQueryHandler : IRequestHandler<GetTaskByIdQuery, TaskForDetailsDto>
     {

@@ -10,21 +10,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OFI.Infrastructure.Handlers
+namespace OFI.Infrastructure.Handlers.Tasks.Queries
 {
     public class GetTaskForDashboardByUserIdQueryHandler : IRequestHandler<GetTasksForDashboardByUserIdQuery, IEnumerable<TaskForDashboardDto>>
     {
-        private readonly ITaskService _taskService;
-        public GetTaskForDashboardByUserIdQueryHandler(ITaskService taskService)
+        private readonly ITaskService taskService;
+        public GetTaskForDashboardByUserIdQueryHandler(ITaskService _taskService)
         {
-            _taskService = taskService;
+            taskService = _taskService;
         }
 
         public async Task<IEnumerable<TaskForDashboardDto>> Handle(GetTasksForDashboardByUserIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                return await _taskService.GetTaskForDashboardByUserId(request.UserId);
+                return await taskService.GetTaskForDashboardByUserId(request.UserId);
             }
             catch (Exception ex)
             {

@@ -2,7 +2,6 @@
 using Core.InterfaceRepository;
 using Dapper;
 using Microsoft.Extensions.Configuration;
-using OFI.Infrastructure.Helpers;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -13,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Collections.Specialized;
+using OFI.Infrastructure.Helpers;
 
 namespace OFI.Infrastructure.Task
 {

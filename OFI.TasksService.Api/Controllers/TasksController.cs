@@ -30,6 +30,7 @@ namespace OFI.TasksService.Api.Controllers
         [HttpGet("task/{userId}")]
         public async Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardByUserId(int userId)
         {
+            //TODO by mediator change this.
             logger.LogInformation($"{nameof(GetTaskForDashboardByUserId)} function just started");
             try
             {

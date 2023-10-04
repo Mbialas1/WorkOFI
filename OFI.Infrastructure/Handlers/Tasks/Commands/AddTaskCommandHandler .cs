@@ -10,13 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OFI.Infrastructure.Handlers
+namespace OFI.Infrastructure.Handlers.Tasks.Commands
 {
     public class AddTaskCommandHandler : IRequestHandler<AddTaskCommand, TaskAggregate>
     {
         private readonly ITaskRepository _taskRepository;
-        public AddTaskCommandHandler(ITaskRepository taskRepository) {
-                _taskRepository = taskRepository;
+        public AddTaskCommandHandler(ITaskRepository taskRepository)
+        {
+            _taskRepository = taskRepository;
         }
 
         public async Task<TaskAggregate> Handle(AddTaskCommand request, CancellationToken cancellationToken)
