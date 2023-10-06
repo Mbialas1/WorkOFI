@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Collections.Specialized;
 using OFI.Infrastructure.Helpers;
+using Core.Application.Dtos;
 
 namespace OFI.Infrastructure.Task
 {
@@ -66,5 +67,25 @@ namespace OFI.Infrastructure.Task
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardDtos(long userId)
+        {
+            logger.LogInformation($"Start function : {nameof(GetTaskForDashboardDtos)} ");
+            try
+            {
+                StringBuilder query = new StringBuilder();
+                query.Append("SELECT t.Id, t.Name, t.Description, s.TaskStatus, r.TotalRemaining ");
+                query.Append("FROM Tasks t ");
+                query.Append("JOIN TaskStatuses s ON t.Id = s.TaskId ");
+                query.Append("JOIN TaskRemainingTimes r ON t.Id = r.TaskId ");
+                query.Append("WHERE t.UserId = @UserId ");
+
+                return await dbConnection.QueryAsync<TaskForDashboardDto>(query.ToString(), new { UserId  = userId});
+            }
+            catch(Exception ex)
+            {
+                logger.LogError($"Error in fucntion {nameof(GetTaskForDashboardDtos)}. More information: {ex.Message} ");
+                throw;
+            }
+        }
     }
 }

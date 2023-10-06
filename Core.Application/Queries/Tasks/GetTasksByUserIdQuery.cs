@@ -10,9 +10,9 @@ namespace Core.Application.Queries
 {
     public class GetTasksForDashboardByUserIdQuery : IRequest<IEnumerable<TaskForDashboardDto>>
     {
-        public int UserId { get; }
+        public long UserId { get; }
 
-        public GetTasksForDashboardByUserIdQuery(int userId)
+        public GetTasksForDashboardByUserIdQuery(long userId)
         {
             UserId = userId;
         }

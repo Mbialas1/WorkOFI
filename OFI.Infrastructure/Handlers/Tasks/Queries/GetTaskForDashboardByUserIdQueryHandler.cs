@@ -14,17 +14,17 @@ namespace OFI.Infrastructure.Handlers.Tasks.Queries
 {
     public class GetTaskForDashboardByUserIdQueryHandler : IRequestHandler<GetTasksForDashboardByUserIdQuery, IEnumerable<TaskForDashboardDto>>
     {
-        private readonly ITaskService taskService;
-        public GetTaskForDashboardByUserIdQueryHandler(ITaskService _taskService)
+        private readonly ITaskRepository taskRepository;
+        public GetTaskForDashboardByUserIdQueryHandler(ITaskRepository _taskRepository)
         {
-            taskService = _taskService;
+            taskRepository = _taskRepository;
         }
 
         public async Task<IEnumerable<TaskForDashboardDto>> Handle(GetTasksForDashboardByUserIdQuery request, CancellationToken cancellationToken)
         {
             try
             {
-                return await taskService.GetTaskForDashboardByUserId(request.UserId);
+                return await taskRepository.GetTaskForDashboardDtos(request.UserId);
             }
             catch (Exception ex)
             {

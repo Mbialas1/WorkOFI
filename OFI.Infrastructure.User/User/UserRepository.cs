@@ -48,7 +48,7 @@ namespace OFI.Infrastructure.User
             try
             {
 
-                const string query = "SELECT UserId, FirstName, LastName FROM Users";
+                const string query = "SELECT Id, FirstName, LastName FROM Users";
                 var users = await dbConnection.QueryAsync<UserDashboardDTO>(query);
                 return users;
             }
