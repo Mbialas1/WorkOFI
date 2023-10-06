@@ -19,4 +19,8 @@ export class ApiService {
   addTask(task: Task): Observable<any>{
     return this.http.post(`${this.apiUrl}/Tasks/addTask`, task);
   }
+
+  loadDashboardByUserId(idUser: number): Observable<Task[]>{
+    return this.http.get<Task[]>(`${this.apiUrl}/Tasks/dashboard/${idUser}`);
+  }
 }

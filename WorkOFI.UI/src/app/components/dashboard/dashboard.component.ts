@@ -26,9 +26,9 @@ export class DashboardComponent {
   ngOnInit(): void {
     this.userService.getAllUsers().subscribe(data => {
       this.users = data;
-      // Jeśli chcesz od razu wybrać pierwszego użytkownika:
       if(this.users.length > 0) {
         this.selectedUser = this.users[0];
+        console.log(this.selectedUser);
         this.refreshTasksForSelectedUser();
       }
       else{
@@ -41,11 +41,11 @@ export class DashboardComponent {
   }
 
   refreshTasksForSelectedUser() {
-    // if(this.selectedUser) {
-    //   this.taskService.getTasksForUser(this.selectedUser.id).subscribe(data => {
-    //     this.tasks = data;
-    //   });
-    // }
+    if(this.selectedUser) {
+      this.taskService.loadDashboardByUserId(this.selectedUser.id).subscribe(data => {
+        this.tasks = data;
+      });
+    }
   }
 
 }

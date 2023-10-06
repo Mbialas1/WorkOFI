@@ -27,25 +27,27 @@ namespace OFI.TasksService.Api.Controllers
             this.logger = _logger;
         }
 
-        [HttpGet("task/{userId}")]
-        public async Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardByUserId(int userId)
+        [HttpGet("dashboard/{userId}")]
+        public async Task<ActionResult<IEnumerable<TaskForDashboardDto>>> GetTaskForDashboardByUserId(int userId)
         {
-            //TODO by mediator change this.
             logger.LogInformation($"{nameof(GetTaskForDashboardByUserId)} function just started");
             try
             {
-                var tasks = await taskRepository.GetByUserIdAsync(userId);
-                return tasks.Select(task => new TaskForDashboardDto
+                if (userId < 1)
                 {
-                    Name = task.Name,
-                    Description = task.Description,
-                    TaskStatusStatus = (TaskStatusEnum)task.Progress
-                }).ToList();
+                    logger.LogError($"{nameof(GetTaskForDashboardByUserId)} userd id cant be less than 1");
+                    return BadRequest($"inncoretc user id = {userId}");
+                }
+
+                var query = new GetTasksForDashboardByUserIdQuery(userId);
+                var result = await mediator.Send(query);
+
+                return Ok(result);
             }
             catch (Exception ex)
             {
                 logger.LogError($"Error in {nameof(GetTaskForDashboardByUserId)} with detail error : {ex.Message} ");
-                return null;
+                return BadRequest();
             }
         }
 

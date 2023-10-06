@@ -20,13 +20,14 @@ namespace Core.Services.Services
 
         public async Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardByUserId(int userId)
         {
-            var tasks = await taskRepository.GetByUserIdAsync(userId);
-            return tasks.Select(task => new TaskForDashboardDto
-            {
-                Name = task.Name,
-                Description = task.Description,
-                TaskStatusStatus = (TaskStatusEnum)task.Progress
-            }).ToList();
+            throw new NotImplementedException();
+            //var tasks = await taskRepository.GetByUserIdAsync(userId);
+            //return tasks.Select(task => new TaskForDashboardDto
+            //{
+            //    Name = task.Name,
+            //    Description = task.Description,
+            //    TaskStatusStatus = (TaskStatusEnum)task.Progress
+            //}).ToList();
         }
     }
 }
