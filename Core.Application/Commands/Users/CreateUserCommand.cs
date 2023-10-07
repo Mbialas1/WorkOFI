@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Core.Application.Commands
 {
-    public class CreateUserCommand : IRequest<User>
+    public class CreateUserCommand : IRequest<UserAggregate>
     {
         public string Name { get; set; }
     }

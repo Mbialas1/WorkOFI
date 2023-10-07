@@ -10,9 +10,9 @@ namespace Core.Application.Queries
 {
     public class GetTaskByIdQuery : IRequest<TaskForDetailsDto>
     {
-        public int TaskId { get; set; }
+        public long TaskId { get; set; }
 
-        public GetTaskByIdQuery(int taskId)
+        public GetTaskByIdQuery(long taskId)
         {
             TaskId = taskId;
         }

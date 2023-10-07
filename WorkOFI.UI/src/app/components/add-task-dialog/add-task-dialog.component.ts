@@ -1,9 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Task } from 'src/app/models/task.model';
+import { AddingTask } from 'src/app/models/addingTask.model';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { ApiService } from 'src/app/api.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { User } from 'src/app/models/user.model';
+import { UserService } from 'src/app/user.service';
 
 @Component({
     selector: 'app-add-task-dialog',
@@ -11,17 +13,26 @@ import { takeUntil } from 'rxjs/operators';
     styleUrls: ['./add-task-dialog.component.css']
 })
 export class AddTaskDialogComponent {
-    task : Task = {
+    task : AddingTask = {
         id: 0,
         name: '',
         description: ''
     };
 
     private destroy$ = new Subject<void>();
+    selectedUser? : User;
+    users: User[] = [];
 
-    constructor(private activeMode: NgbActiveModal, private taskService: ApiService) { }
+    constructor(private activeMode: NgbActiveModal, private taskService: ApiService, private userService: UserService) { }
 
     addTask() {
+
+        this.task.assignedUserId = this.selectedUser?.id;
+        if(!this.task.assignedUserId){
+            console.error('Cant set id of user!');
+            return;
+        }
+        
         this.taskService.addTask(this.task)
         .pipe(takeUntil(this.destroy$))
         .subscribe({
@@ -42,5 +53,14 @@ export class AddTaskDialogComponent {
     ngOnDestroy(){
         this.destroy$.next();
         this.destroy$.complete();
+    }
+
+    ngOnInit(){
+        this.userService.getAllUsers().subscribe(data => {
+            this.users = data;
+            if(this.users.length > 0){
+                this.selectedUser = this.users[0];
+            }
+        });
     }
 }

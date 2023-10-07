@@ -33,9 +33,27 @@ namespace OFI.Infrastructure.Task
             logger.LogInformation($"START function : {nameof(AddAsync)} ");
             try
             {
-                string insertQuery = @"INSERT INTO Tasks (Name, Description, CreatedDate) OUTPUT INSERTED.ID VALUES (@Name, @Description, @CreatedDate)";
+                if (dbConnection.State == ConnectionState.Closed)
+                {
+                    dbConnection.Open();
+                }
+                //BEGIN TRANS
+                using var transaction = dbConnection.BeginTransaction();
 
-                var insertedId = await dbConnection.QuerySingleAsync<int>(insertQuery, task);
+                string insertQuery = @"INSERT INTO Tasks (Name, Description, CreatedDate, UserId) OUTPUT INSERTED.ID VALUES (@Name, @Description, @CreatedDate, @AssignedUserId)";
+                var insertedId = await dbConnection.QuerySingleAsync<int>(insertQuery, task, transaction);
+
+                string insertStatusQuery = @"INSERT INTO TaskStatuses (TaskId, TaskStatus) VALUES (@TaskId, @Status)";
+                await dbConnection.ExecuteAsync(insertStatusQuery, new { TaskId = insertedId, Status = 4 }, transaction);
+
+                TimeSpan defaultTime = new TimeSpan(0, 0, 0);
+
+                string insertRemainingTimeQuery = @"INSERT INTO TaskRemainingTimes (TotalRemaining, TaskId) VALUES (@TotalRemaining, @TaskId)";
+                await dbConnection.ExecuteAsync(insertRemainingTimeQuery, new { TotalRemaining = defaultTime, TaskId = insertedId }, transaction);
+
+
+                transaction.Commit();
+                //END TRANS
 
                 task.Id = insertedId;
 
@@ -48,7 +66,7 @@ namespace OFI.Infrastructure.Task
             }
         }
 
-        public async Task<TaskAggregate> GetByIdAsync(int taskId)
+        public async Task<TaskAggregate> GetByIdAsync(long taskId)
         {
             logger.LogInformation($"START function : {nameof(GetByIdAsync)} ");
             try
@@ -68,6 +86,7 @@ namespace OFI.Infrastructure.Task
             throw new NotImplementedException();
         }
 
+        //TODO Dont return dto's files
         public async Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardDtos(long userId)
         {
             logger.LogInformation($"Start function : {nameof(GetTaskForDashboardDtos)} ");

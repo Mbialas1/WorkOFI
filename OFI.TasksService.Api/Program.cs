@@ -11,6 +11,8 @@ using System.Reflection;
 using Serilog;
 using Serilog.Events;
 using OFI.Infrastructure.Handlers.Tasks.Commands;
+using Core.Application.Services;
+using Core.Application.Services.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,7 +46,11 @@ builder.Services.AddCors(options =>
         });
 });
 
-
+builder.Services.AddHttpClient<IUserService, UserCommunicationService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration[ServicesHelper.User_api_services_configuration]);
+}
+);
 
 var app = builder.Build();
 app.UseCors("AllowAllOrigins");

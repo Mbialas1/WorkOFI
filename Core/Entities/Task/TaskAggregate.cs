@@ -17,6 +17,7 @@ namespace Core.Entities.Task
         public TaskAggregate BaseTask { get; set; }
         public List<TaskAggregate> SubTasks { get; set; }
         public int Progress { get; set; }
+        public long AssignedUserId { get; set; }
         public TaskAggregate() { }
     }
 }

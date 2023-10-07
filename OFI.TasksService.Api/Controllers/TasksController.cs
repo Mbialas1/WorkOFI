@@ -57,6 +57,12 @@ namespace OFI.TasksService.Api.Controllers
             logger.LogInformation($"Start fucntion {nameof(AddTask)}");
             try
             {
+                if(taskDto.AssignedUserId < 1)
+                {
+                    logger.LogError($"{nameof(AddTask)} assigned user id cant be null or less than 1");
+                    return BadRequest("Invalid AssignedUserId");
+                }
+
                 var command = new AddTaskCommand(taskDto);
                 var result = await mediator.Send(command);
 

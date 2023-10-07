@@ -1,0 +1,13 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Core.Application.Services.Helpers
+{
+    public class ServicesHelper
+    {
+        public const string User_api_services_configuration = "UserApiSettings:BaseUrl";
+    }
+}

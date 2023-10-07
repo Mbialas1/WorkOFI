@@ -25,6 +25,29 @@ namespace OFI.UserService.Api.Controllers
             this.logger = _logger;
         }
 
+        [HttpGet("users/{userId}")]
+        public async Task<ActionResult<UserDTO>> GetUserById(long userId)
+        {
+            logger.LogInformation($"{nameof(GetUserById)} function just started");
+            try
+            {
+                var query = new GetUserByIdQueries(userId);
+                var user = await mediator.Send(query);
+
+                if (user == null)
+                {
+                    return NotFound("No users found.");
+                }
+
+                return Ok(user);
+            }
+            catch(Exception ex)
+            {
+                logger.LogError($"Error in {nameof(GetUserById)} with detail error : {ex.Message} ");
+                return BadRequest("Cant get user by this id");
+            }
+        }
+
         /// <summary>
         /// Task for test.
         /// </summary>
