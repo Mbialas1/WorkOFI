@@ -25,26 +25,32 @@ export class AddTaskDialogComponent {
 
     constructor(private activeMode: NgbActiveModal, private taskService: ApiService, private userService: UserService) { }
 
-    addTask() {
+    addingTask = false;
 
-        this.task.assignedUserId = this.selectedUser?.id;
-        if(!this.task.assignedUserId){
-            console.error('Cant set id of user!');
-            return;
-        }
-        
-        this.taskService.addTask(this.task)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-            next: response => {
-                console.log('Add task done', response);
-                this.closeDialog();
-            },
-            error: error => {
-                console.log('Cannot add task', error);
-            }
-        });
+addTask() {
+    this.addingTask = true;
+
+    this.task.assignedUserId = this.selectedUser?.id;
+    if(!this.task.assignedUserId){
+        console.error('Cant set id of user!');
+        this.addingTask = false;
+        return;
     }
+    
+    this.taskService.addTask(this.task)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+        next: response => {
+            console.log('Add task done', response);
+            this.closeDialog();
+            this.addingTask = false;
+        },
+        error: error => {
+            console.log('Cannot add task', error);
+            this.addingTask = false;
+        }
+    });
+}
 
     closeDialog() {
         this.activeMode.dismiss();

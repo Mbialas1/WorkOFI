@@ -25,6 +25,9 @@
   </form>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-primary" (click)="addTask()">Dodaj</button>
+  <button type="button" [disabled]="addingTask" class="btn btn-primary" (click)="addTask()">Dodaj</button>
   <button type="button" class="btn btn-secondary" (click)="closeDialog()">Anuluj</button>
+  <ng-container *ngIf="addingTask">
+    Dodawanie zadania...
+</ng-container>
 </div>
