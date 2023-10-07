@@ -7,4 +7,6 @@ export interface Task {
     lastEdited?: Date;
     assignedUser?: string;
     createdDate?: Date;
+    taskStatus?: string; // TODO Change for non-nullable
+    totalRemaing? : Date;
 }

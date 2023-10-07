@@ -2,14 +2,27 @@
     <option *ngFor="let user of users" [ngValue]="user">{{ user.firstName + user.lastName }}</option>
   </select>
 
-<div class="dashboard-container">
+  <div class="container-fluid mt-5">
     <h2>Lista zadań</h2>
-    <ul class="task-list">
-        <li *ngFor="let task of tasks">
-            <a [routerLink]="['/task', task.id]">
-            <h3>{{ task.name }}</h3>
-            <p>{{ task.description }}</p>
-        </a>
-        </li>
-    </ul>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Nazwa</th>
+                <th>Opis</th>
+                <th>Status</th>
+                <th>Pozostały czas</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let task of tasks" (dblclick)="navigateToTaskDetails(task.id)">
+                <td>{{ task.id }}</td>
+                <td>{{ task.name }}</td>
+                <td>{{ task.description }}</td>
+                <td>{{ task.taskStatus }}</td>
+                <td>{{ task.totalRemaing }}</td>
+             </tr>
+        </tbody>
+    </table>
 </div>
+
