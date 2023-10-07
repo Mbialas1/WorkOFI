@@ -12,10 +12,10 @@ namespace Core.Dtos
         public string FirstName { get; set; }
         public string LastName { get; set; }
 
-        public UserDTO(long id, string firsName, string lastName)
+        public UserDTO(long id, string firstName, string lastName)
         {
             Id = id;
-            FirstName = firsName;
+            FirstName = firstName;
             LastName = lastName;
         }
     }

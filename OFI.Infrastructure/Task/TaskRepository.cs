@@ -66,13 +66,19 @@ namespace OFI.Infrastructure.Task
             }
         }
 
-        public async Task<TaskAggregate> GetByIdAsync(long taskId)
+        public async Task<CompleteTaskInfo> GetByIdAsync(long _taskId)
         {
             logger.LogInformation($"START function : {nameof(GetByIdAsync)} ");
             try
             {
-                var sql = "SELECT * FROM Tasks WHERE Id = @Id";
-                return await dbConnection.QuerySingleOrDefaultAsync<TaskAggregate>(sql, new { Id = taskId });
+                StringBuilder query = new StringBuilder();
+                query.Append("SELECT t.Id, t.Name, t.Description, t.UserId, t.CreatedDate, tr.TotalRemaining, ts.TaskStatus ");
+                query.Append("FROM Tasks t ");
+                query.Append("LEFT JOIN TaskRemainingTimes tr ON t.Id = tr.TaskId ");
+                query.Append("LEFT JOIN TaskStatuses ts ON t.Id = ts.TaskId ");
+                query.Append("WHERE t.Id = @taskId ");
+
+                return await dbConnection.QuerySingleOrDefaultAsync<CompleteTaskInfo>(query.ToString(), new { taskId = _taskId });
             }
             catch (Exception ex)
             {

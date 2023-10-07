@@ -13,6 +13,6 @@ namespace Core.InterfaceRepository
         Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardDtos(long userId);
         Task<IEnumerable<TaskAggregate>> GetByUserIdAsync(int userId);
         Task<TaskAggregate> AddAsync(TaskAggregate task);
-        Task<TaskAggregate> GetByIdAsync(long taskId);
+        Task<CompleteTaskInfo> GetByIdAsync(long taskId);
     }
 }

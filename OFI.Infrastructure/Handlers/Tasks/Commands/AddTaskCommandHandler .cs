@@ -37,7 +37,7 @@ namespace OFI.Infrastructure.Handlers.Tasks.Commands
                     Name = request.TaskDto.Name,
                     Description = request.TaskDto.Description,
                     CreatedDate = DateTime.UtcNow,
-                    AssignedUserId = request.TaskDto.AssignedUserId
+                    UserId = request.TaskDto.AssignedUserId
                 };
 
                 return await _taskRepository.AddAsync(taskEntity);

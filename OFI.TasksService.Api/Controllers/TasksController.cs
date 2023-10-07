@@ -79,7 +79,7 @@ namespace OFI.TasksService.Api.Controllers
         }
 
         [HttpGet("getTask/{taskId}")]
-        public async Task<IActionResult> GetTaskById(int taskId)
+        public async Task<ActionResult<TaskForDetailsDto>> GetTaskById(int taskId)
         {
             logger.LogInformation($"Start fucntion {nameof(GetTaskById)}");
             try
