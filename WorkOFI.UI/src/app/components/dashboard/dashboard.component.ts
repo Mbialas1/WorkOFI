@@ -33,7 +33,6 @@ export class DashboardComponent {
       this.users = data;
       if(this.users.length > 0) {
         this.selectedUser = this.users[0];
-        console.log(this.selectedUser);
         this.refreshTasksForSelectedUser();
       }
       else{

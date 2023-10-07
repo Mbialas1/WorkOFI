@@ -1,5 +1,6 @@
 ﻿using Core.Dtos;
 using Core.Entities.Task;
+using Core.Entities.User;
 using Core.InterfaceRepository;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -27,27 +28,38 @@ namespace OFI.Infrastructure.User
             logger = _logger;
         }
 
-        public System.Threading.Tasks.Task AddAsync(Core.Entities.User.User user)
+        public System.Threading.Tasks.Task AddAsync(Core.Entities.User.UserAggregate user)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Core.Entities.User.User> GetAsync(Guid id)
+        public async Task<Core.Entities.User.UserAggregate> GetAsync(long userId)
+        {
+            logger.LogInformation($"START function : {nameof(GetAsync)} ");
+            try
+            {
+                const string query = "SELECT Id, FirstName, LastName FROM Users WHERE Id = @id";
+                var user = await dbConnection.QuerySingleOrDefaultAsync<UserAggregate>(query, new { id = userId });
+                return user;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in funciton {nameof(GetAsync)}. More information: {ex.Message}");
+                throw;
+            }
+        }
+
+        public Task<Core.Entities.User.UserAggregate> GetByUsernameAsync(string username)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Core.Entities.User.User> GetByUsernameAsync(string username)
-        {
-            throw new NotImplementedException();
-        }
-
+        //TODO Return here normaln entities no DTO!
         public async Task<IEnumerable<UserDashboardDTO>> GetUserDashboardDTOsAsync()
         {
             logger.LogInformation($"START function : {nameof(GetUserDashboardDTOsAsync)} ");
             try
             {
-
                 const string query = "SELECT Id, FirstName, LastName FROM Users";
                 var users = await dbConnection.QueryAsync<UserDashboardDTO>(query);
                 return users;

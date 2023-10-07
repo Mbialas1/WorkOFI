@@ -11,8 +11,8 @@ namespace Core.InterfaceRepository
     public interface IUserRepository
     {
         Task<IEnumerable<UserDashboardDTO>> GetUserDashboardDTOsAsync();
-        Task<User> GetAsync(Guid id);
-        Task<User> GetByUsernameAsync(string username);
-        Task AddAsync(User user);
+        Task<UserAggregate> GetAsync(long id);
+        Task<UserAggregate> GetByUsernameAsync(string username);
+        Task AddAsync(UserAggregate user);
     }
 }

@@ -9,5 +9,6 @@ namespace Core.Services.InterfaceServices
 {
     public interface IUserService
     {
+        Task<bool> UserExists(long userId);
     }
 }

@@ -18,7 +18,6 @@ Log.Logger = new LoggerConfiguration()
 
 // Add services to the container.
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<GetAllUsersForDashboardQueriesHandler, GetAllUsersForDashboardQueriesHandler>();
