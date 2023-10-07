@@ -3,6 +3,7 @@ import { ApiService } from 'src/app/api.service';
 import { Task } from 'src/app/models/task.model';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,7 +15,7 @@ export class DashboardComponent {
   users: User[] = [];
   selectedUser? : User;
 
-  constructor(private userService: UserService, private taskService: ApiService){}
+  constructor(private userService: UserService, private taskService: ApiService, private router: Router){}
 
   defaultView() : void{
     this.tasks = [
@@ -22,6 +23,10 @@ export class DashboardComponent {
       { id: 6, name: 'Zadanie 2', description: 'Opis zadania 2' },
     ];
   }
+
+  navigateToTaskDetails(taskId: number) {
+    this.router.navigate(['/task', taskId]);
+ }
 
   ngOnInit(): void {
     this.userService.getAllUsers().subscribe(data => {

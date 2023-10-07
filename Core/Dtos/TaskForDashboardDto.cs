@@ -12,7 +12,7 @@ namespace Core.Application.Dtos
         public long Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public TaskStatusEnum TaskStatus { get; set; }
+        public string TaskStatus { get; set; }
         public DateTime TotalRemaing { get; set; }
     }
 }
