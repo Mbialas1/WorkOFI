@@ -4,6 +4,7 @@ import { Task } from 'src/app/models/task.model';
 import { Log } from 'src/app/models/log.model';
 import { Comment } from 'src/app/models/comment.model';
 import { ActivatedRoute } from '@angular/router';
+import { StatusTaskDTO } from 'src/app/models/statusTaskDTO.model';
 
 @Component({
   selector: 'app-task-detail',
@@ -26,5 +27,27 @@ export class TaskDetailComponent implements OnInit {
       this.task = data;
     })
   }
+  }
+
+  changeStatusTask(idStatusTask : number) : void{
+    if(!(this.task)){
+      console.log("Not set task!");
+      return;
+    }
+
+    if(idStatusTask > 5){
+      console.error("Wrong! Cant be more than 5");
+      return;
+    }
+
+    let statusTask : StatusTaskDTO = new StatusTaskDTO(this.task.id, idStatusTask);
+    this.apiService.updateTaskStatus(statusTask).subscribe({
+      next: response => {
+          console.log('Status zadania został pomyślnie zaktualizowany', response);
+      },
+      error: error => {
+          console.error('Wystąpił błąd podczas aktualizacji statusu zadania', error);
+      }
+  });
   }
 }

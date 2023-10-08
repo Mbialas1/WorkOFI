@@ -8,10 +8,11 @@ namespace Core.Enums
 {
     public enum TaskStatusEnum
     {
-        InProgress = 0,
-        Completed = 1,
-        Close = 2,
-        OnHold = 3,
-        ToDo = 4,
+        None = 0,
+        InProgress = 1,
+        Completed = 2,
+        Close = 3,
+        OnHold = 4,
+        ToDo = 5,
     }
 }
