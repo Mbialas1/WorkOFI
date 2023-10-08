@@ -15,6 +15,7 @@ using System.Collections.Specialized;
 using OFI.Infrastructure.Helpers;
 using Core.Application.Dtos;
 using Core.Enums;
+using Core.Dtos;
 
 namespace OFI.Infrastructure.Task
 {
@@ -59,20 +60,26 @@ namespace OFI.Infrastructure.Task
 
                 return task;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError($"Error in funciton {nameof(AddAsync)}. More information: {ex.Message}");
                 throw;
             }
         }
 
-        public async Task<TaskAggregate> GetByIdAsync(long taskId)
+        public async Task<CompleteTaskInfo> GetByIdAsync(long _taskId)
         {
             logger.LogInformation($"START function : {nameof(GetByIdAsync)} ");
             try
             {
-                var sql = "SELECT * FROM Tasks WHERE Id = @Id";
-                return await dbConnection.QuerySingleOrDefaultAsync<TaskAggregate>(sql, new { Id = taskId });
+                StringBuilder query = new StringBuilder();
+                query.Append("SELECT t.Id, t.Name, t.Description, t.UserId, t.CreatedDate, tr.TotalRemaining, ts.TaskStatus ");
+                query.Append("FROM Tasks t ");
+                query.Append("LEFT JOIN TaskRemainingTimes tr ON t.Id = tr.TaskId ");
+                query.Append("LEFT JOIN TaskStatuses ts ON t.Id = ts.TaskId ");
+                query.Append("WHERE t.Id = @taskId ");
+
+                return await dbConnection.QuerySingleOrDefaultAsync<CompleteTaskInfo>(query.ToString(), new { taskId = _taskId });
             }
             catch (Exception ex)
             {
@@ -98,14 +105,30 @@ namespace OFI.Infrastructure.Task
                 query.Append("JOIN TaskStatuses s ON t.Id = s.TaskId ");
                 query.Append("JOIN TaskRemainingTimes r ON t.Id = r.TaskId ");
                 query.Append("WHERE t.UserId = @UserId ");
-                
-                IEnumerable<TaskForDashboardDto> tasksFromDb =  await dbConnection.QueryAsync<TaskForDashboardDto>(query.ToString(), new { UserId  = userId});
+
+                IEnumerable<TaskForDashboardDto> tasksFromDb = await dbConnection.QueryAsync<TaskForDashboardDto>(query.ToString(), new { UserId = userId });
                 tasksFromDb.ToList().ForEach(task => task.TaskStatus = ((TaskStatusEnum)int.Parse(task.TaskStatus)).ToString());
                 return tasksFromDb;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError($"Error in fucntion {nameof(GetTaskForDashboardDtos)}. More information: {ex.Message} ");
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateTaskStatus(UpdateTaskStatusDTO taskStatusDTO)
+        {
+            logger.LogInformation($"Start function : {nameof(UpdateTaskStatus)} ");
+            try
+            {
+                string query = @"update TaskStatuses set TaskStatus = @StatusTaskId where TaskId = @idTask";
+                var result = await dbConnection.QueryAsync<bool>(query, new { StatusTaskId = taskStatusDTO.StatusTaskId, idTask = taskStatusDTO.TaskId });
+                return result != null;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in fucntion {nameof(UpdateTaskStatus)}. More information: {ex.Message} ");
                 throw;
             }
         }

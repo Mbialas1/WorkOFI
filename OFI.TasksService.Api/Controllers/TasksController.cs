@@ -1,4 +1,5 @@
 ﻿using Core.Application.Commands;
+using Core.Application.Commands.Tasks;
 using Core.Application.Dtos;
 using Core.Application.Queries;
 using Core.Dtos;
@@ -25,6 +26,30 @@ namespace OFI.TasksService.Api.Controllers
             taskRepository = _taskRepository;
             this.mediator = _mediator;
             this.logger = _logger;
+        }
+
+        [HttpPut("task/changeStatus")]
+        public async Task<IActionResult> UpdateTaskStatus([FromBody] UpdateTaskStatusDTO taskStatusDto)
+        {
+            logger.LogInformation($"{nameof(UpdateTaskStatus)} function just started");
+            try
+            {
+                if(taskStatusDto.StatusTaskId  > 5 || !(taskStatusDto.TaskId > 0))
+                {
+                    logger.LogError($"{nameof(UpdateTaskStatus)} wrong parameters");
+                    return BadRequest("Wrong parameters");
+                }
+
+                var command = new ChangeStatusTaskCommand(taskStatusDto);
+                mediator.Send(command);
+
+                return Accepted();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in {nameof(UpdateTaskStatus)} with detail error : {ex.Message} ");
+                return BadRequest();
+            }
         }
 
         [HttpGet("dashboard/{userId}")]
@@ -79,7 +104,7 @@ namespace OFI.TasksService.Api.Controllers
         }
 
         [HttpGet("getTask/{taskId}")]
-        public async Task<IActionResult> GetTaskById(int taskId)
+        public async Task<ActionResult<TaskForDetailsDto>> GetTaskById(int taskId)
         {
             logger.LogInformation($"Start fucntion {nameof(GetTaskById)}");
             try

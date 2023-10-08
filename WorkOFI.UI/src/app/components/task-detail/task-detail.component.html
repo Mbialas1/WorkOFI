@@ -1,7 +1,7 @@
 <div class="task-container">
     <div class="task-actions">
-        <button class="btn-action">Zakończ zadanie</button>
-        <button class="btn-action">Rozpocznij zadanie</button>
+        <button class="btn-action" (click)="changeStatusTask(2)">Zakończ zadanie</button>
+        <button class="btn-action" (click)="changeStatusTask(1)">Rozpocznij zadanie</button>
         <button class="btn-action">Zaloguj czas</button>
         <button class="btn-action">Edytuj</button>
         <button class="btn-action">Dodaj komentarz</button>
@@ -9,12 +9,13 @@
     
     <div *ngIf="task != null" class="task-details">
         <h2>Detale zadania</h2>
+        <p><strong>Status zadania:</strong> {{ task.taskStatus }}</p>
         <p><strong>Nazwa:</strong> {{ task.name }}</p>
         <p><strong>Opis:</strong></p>
         <textarea readonly>{{ task.description }}</textarea>
-        <p><strong>Czas zalogowany:</strong> {{ task.loggedTime }} h/m</p>
-        <p><strong>Ostatnio edytowane:</strong> {{ task.lastEdited }}</p>
-        <p><strong>Użytkownik:</strong> {{ task.assignedUser }}</p>
+        <p><strong>Czas zalogowany:</strong> {{ task.tottalRemaining }} h/m</p>
+        <p><strong>Ostatnio edytowane:</strong> {{ task.lastEditTime }}</p>
+        <p><strong>Użytkownik:</strong> {{ task.nameOfUser }}</p>
         <p><strong>Utworzone:</strong> {{ task.createdDate }}</p>
     </div>
 

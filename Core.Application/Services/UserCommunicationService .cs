@@ -1,10 +1,12 @@
-﻿using Core.Services.InterfaceServices;
+﻿using Core.Dtos;
+using Core.Services.InterfaceServices;
 using Polly;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Core.Application.Services
@@ -35,6 +37,31 @@ namespace Core.Application.Services
 
             }
             catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public async Task<UserDTO> GetUserById(long userId)
+        {
+            try
+            {
+                HttpResponseMessage responseMessage = await _circuitBreakerPolicy.ExecuteAsync(() => httpClient.GetAsync($"{URL_GET_USER}{userId}"));
+
+                if (responseMessage.IsSuccessStatusCode)
+                {
+                    string json = await responseMessage.Content.ReadAsStringAsync();
+                    var options = new JsonSerializerOptions
+                    {
+                        PropertyNameCaseInsensitive = true
+                    };
+                    UserDTO user = JsonSerializer.Deserialize<UserDTO>(json, options);
+                    return user;
+                }
+                else
+                    return null;
+            }
+            catch
             {
                 throw;
             }
