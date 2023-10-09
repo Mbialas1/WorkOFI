@@ -9,14 +9,14 @@
     
     <div *ngIf="task != null" class="task-details">
         <h2>Detale zadania</h2>
-        <p><strong>Status zadania:</strong> {{ task?.taskStatus }}</p>
-        <p><strong>Nazwa:</strong> {{ task?.name }}</p>
+        <p><strong>Status zadania:</strong> {{ task.taskStatus }}</p>
+        <p><strong>Nazwa:</strong> {{ task.name }}</p>
         <p><strong>Opis:</strong></p>
-        <textarea readonly>{{ task?.description }}</textarea>
-        <p><strong>Czas zalogowany:</strong> {{ task?.tottalRemaining }} h/m</p>
-        <p><strong>Ostatnio edytowane:</strong> {{ task?.lastEditTime }}</p>
-        <p><strong>Użytkownik:</strong> {{ task?.nameOfUser }}</p>
-        <p><strong>Utworzone:</strong> {{ task?.createdDate }}</p>
+        <textarea readonly>{{ task.description }}</textarea>
+        <p><strong>Czas zalogowany:</strong> {{ task.tottalRemaining }} h/m</p>
+        <p><strong>Ostatnio edytowane:</strong> {{ task.lastEditTime }}</p>
+        <p><strong>Użytkownik:</strong> {{ task.nameOfUser }}</p>
+        <p><strong>Utworzone:</strong> {{ task.createdDate }}</p>
     </div>
 
     <details class="time-logs">

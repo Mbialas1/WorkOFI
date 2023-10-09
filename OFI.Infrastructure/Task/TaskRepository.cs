@@ -16,6 +16,7 @@ using OFI.Infrastructure.Helpers;
 using Core.Application.Dtos;
 using Core.Enums;
 using Core.Dtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace OFI.Infrastructure.Task
 {
@@ -93,6 +94,22 @@ namespace OFI.Infrastructure.Task
             throw new NotImplementedException();
         }
 
+        public async Task<TimeOnly> GetLoggedTimeByIdTask(long taskId)
+        {
+            logger.LogInformation($"Start function : {nameof(GetLoggedTimeByIdTask)} ");
+            try
+            {
+                string query = @"SELECT TotalRemaining FROM TaskRemainingTimes WHERE TaskId = @taskId";
+                TimeSpan result = await dbConnection.QuerySingleAsync<TimeSpan>(query, new { TaskId = taskId });    
+                return new TimeOnly(result.Hours, result.Minutes);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in fucntion {nameof(GetLoggedTimeByIdTask)}. More information: {ex.Message} ");
+                throw;
+            }
+        }
+
         //TODO Dont return dto's files
         public async Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardDtos(long userId)
         {
@@ -113,6 +130,49 @@ namespace OFI.Infrastructure.Task
             catch (Exception ex)
             {
                 logger.LogError($"Error in fucntion {nameof(GetTaskForDashboardDtos)}. More information: {ex.Message} ");
+                throw;
+            }
+        }
+
+        public async Task<bool> LogTimeToTaskById(LogTimeTask model)
+        {
+            logger.LogInformation($"Start function : {nameof(LogTimeToTaskById)} ");
+            try
+            {
+
+                if (dbConnection.State == ConnectionState.Closed)
+                {
+                    dbConnection.Open();
+                }
+                //BEGIN TRANS
+                using var transaction = dbConnection.BeginTransaction();
+
+                string query = @"INSERT INTO LoggedTimes (TaskId, LoggedTime, LoggedDate) OUTPUT INSERTED.ID VALUES (@taskId, @loggedTime, @loggedDate)";
+                int result = await dbConnection.QuerySingleAsync<int>(query, model, transaction);
+                if(result == 0)
+                {
+                    logger.LogError($"Error in repository function {LogTimeToTaskById}");
+                    transaction.Rollback();
+                    throw new ArgumentNullException("Cant add no information about logg time");
+                }
+
+                query = @"UPDATE TaskRemainingTimes set TotalRemaining = @totalRemaining where TaskId = @taskId";
+                result = await dbConnection.ExecuteAsync(query, new { totalRemaining = new TimeSpan(model.TaskTime.Hour, model.TaskTime.Minute, 0), taskId = model.TaskId }, transaction);
+
+                if (result > 0)
+                    transaction.Commit();
+                else
+                {
+                    logger.LogError($"Error in repository function {LogTimeToTaskById}");
+                    transaction.Rollback();
+                    throw new ArgumentNullException("Cant add no information about logg time");
+                }
+
+                return result > 0;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in fucntion {nameof(LogTimeToTaskById)}. More information: {ex.Message} ");
                 throw;
             }
         }
