@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwIfEmpty } from 'rxjs';
 import { Task } from './models/task.model';
 import { StatusTaskDTO } from './models/statusTaskDTO.model';
+import { LogTimeModel } from './models/logTime.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,5 +29,9 @@ export class ApiService {
   updateTaskStatus(task: StatusTaskDTO): Observable<any> {
     return this.http.put(`${this.apiUrl}/Tasks/task/changeStatus`, task);
 }
+
+  logTimeToTask(logModel : LogTimeModel): Observable<any>{
+    return this.http.post(`${this.apiUrl}/Tasks/task/logTimeToTask`, logModel);
+  }
 
 }

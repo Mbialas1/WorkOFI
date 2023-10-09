@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h4 class="modal-title">Zaloguj czas</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <label>Wprowadź czas (format: d - dni, h - godzina, m - minuty, s - sekundy):</label>
+    <input type="text" [(ngModel)]="inputText" class="form-control">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="logTime()">Zaloguj</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss()">Anuluj</button>
+  </div>
+  

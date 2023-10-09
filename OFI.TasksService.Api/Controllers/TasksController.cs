@@ -7,6 +7,7 @@ using Core.Enums;
 using Core.InterfaceRepository;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using OFI.Common.Handler;
 using OFI.Infrastructure.Task;
 using Serilog;
 using Serilog.Data;
@@ -27,6 +28,33 @@ namespace OFI.TasksService.Api.Controllers
             this.mediator = _mediator;
             this.logger = _logger;
         }
+
+        [HttpPost("task/logTimeToTask")]
+        public async Task<IActionResult> LogTimeTask([FromBody] LogTimeTaskDTO logTimeTaskDTO)
+        {
+            logger.LogInformation($"{nameof(LogTimeTask)} function just started");
+            try
+            {
+                if (!(logTimeTaskDTO.TaskId > 0) || (logTimeTaskDTO.TaskId > 0 && 
+                    !LogTimeTaskHandler.HasCorrectLoggetTime(logTimeTaskDTO.Time)))
+                {
+                    logger.LogError($"{nameof(UpdateTaskStatus)} wrong parameters");
+                    return BadRequest("Wrong parameters!");
+                }
+
+                var command = new LogTimeTaskCommand(logTimeTaskDTO);
+                mediator.Send(command);
+
+                return Accepted();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in {nameof(LogTimeTask)} with detail error : {ex.Message} ");
+                return BadRequest();
+            }
+
+        }
+
 
         [HttpPut("task/changeStatus")]
         public async Task<IActionResult> UpdateTaskStatus([FromBody] UpdateTaskStatusDTO taskStatusDto)

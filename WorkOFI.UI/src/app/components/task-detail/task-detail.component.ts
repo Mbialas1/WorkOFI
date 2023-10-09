@@ -5,6 +5,8 @@ import { Log } from 'src/app/models/log.model';
 import { Comment } from 'src/app/models/comment.model';
 import { ActivatedRoute } from '@angular/router';
 import { StatusTaskDTO } from 'src/app/models/statusTaskDTO.model';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LogTimeDialogComponent } from '../log-time/log-time.component';
 
 @Component({
   selector: 'app-task-detail',
@@ -13,7 +15,7 @@ import { StatusTaskDTO } from 'src/app/models/statusTaskDTO.model';
 })
 export class TaskDetailComponent implements OnInit {
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) { }
+  constructor(private apiService: ApiService, private route: ActivatedRoute, private modalService: NgbModal) { }
 
   task?: Task;
   timeLogs? : Log[];
@@ -50,4 +52,20 @@ export class TaskDetailComponent implements OnInit {
       }
   });
   }
+
+  openLogTimeDialog() {
+    if(!(this.task)){
+      return;
+    }
+
+    const modalRef = this.modalService.open(LogTimeDialogComponent);
+  
+    modalRef.componentInstance.taskId = this.task?.id;
+    modalRef.result.then((result) => {
+      console.log(result);
+    }).catch((reason) => {
+      console.log('Dialog dismissed:', reason);
+    });
+  }
+  
 }

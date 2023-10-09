@@ -11,6 +11,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AddTaskDialogComponent } from './components/add-task-dialog/add-task-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { LogTimeDialogComponent } from './components/log-time/log-time.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FormsModule } from '@angular/forms';
     TaskDetailComponent,
     NavMenuComponent,
     DashboardComponent,
-    AddTaskDialogComponent
+    AddTaskDialogComponent,
+    LogTimeDialogComponent
   ],
   imports: [
     BrowserModule,
