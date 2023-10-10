@@ -2,7 +2,9 @@
 using Core.Application.Commands.Tasks;
 using Core.Application.Dtos;
 using Core.Application.Queries;
+using Core.Application.Queries.Tasks;
 using Core.Dtos;
+using Core.Entities.Task;
 using Core.Enums;
 using Core.InterfaceRepository;
 using MediatR;
@@ -27,6 +29,36 @@ namespace OFI.TasksService.Api.Controllers
             taskRepository = _taskRepository;
             this.mediator = _mediator;
             this.logger = _logger;
+        }
+
+        [HttpGet("logTime/{idTask}")]
+        public async Task<ActionResult<IEnumerable<LogDTO>>> GetLogTimeByTask(long idTask) 
+        {
+            logger.LogInformation($"{nameof(GetLogTimeByTask)} function just started");
+            try
+            {
+                if(!(idTask > 1))
+                {
+                    logger.LogError($"{idTask} is less than 1! This TASK doesnt exist!");
+                    return BadRequest("Inccorect taskId parameter");
+                }
+
+                var query = new GetLogTimeDetailByTaskIdQuery(idTask);
+                var result = await mediator.Send(query);
+
+                if(result is null)
+                {
+                    logger.LogError($"{idTask} => cant find logg for this task");
+                    return BadRequest("Cant find logg for this task");
+                }
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in {nameof(GetLogTimeByTask)} with detail error : {ex.Message} ");
+                return BadRequest();
+            }
         }
 
         [HttpPost("task/logTimeToTask")]

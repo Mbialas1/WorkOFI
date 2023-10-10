@@ -42,7 +42,7 @@ namespace OFI.Infrastructure.Task
                 //BEGIN TRANS
                 using var transaction = dbConnection.BeginTransaction();
 
-                string insertQuery = @"INSERT INTO Tasks (Name, Description, CreatedDate, UserId) OUTPUT INSERTED.ID VALUES (@Name, @Description, @CreatedDate, @AssignedUserId)";
+                string insertQuery = @"INSERT INTO Tasks (Name, Description, CreatedDate, UserId) OUTPUT INSERTED.ID VALUES (@Name, @Description, @CreatedDate, @UserId)";
                 var insertedId = await dbConnection.QuerySingleAsync<int>(insertQuery, task, transaction);
 
                 string insertStatusQuery = @"INSERT INTO TaskStatuses (TaskId, TaskStatus) VALUES (@TaskId, @Status)";
@@ -100,12 +100,28 @@ namespace OFI.Infrastructure.Task
             try
             {
                 string query = @"SELECT TotalRemaining FROM TaskRemainingTimes WHERE TaskId = @taskId";
-                TimeSpan result = await dbConnection.QuerySingleAsync<TimeSpan>(query, new { TaskId = taskId });    
+                TimeSpan result = await dbConnection.QuerySingleAsync<TimeSpan>(query, new { TaskId = taskId });
                 return new TimeOnly(result.Hours, result.Minutes);
             }
             catch (Exception ex)
             {
                 logger.LogError($"Error in fucntion {nameof(GetLoggedTimeByIdTask)}. More information: {ex.Message} ");
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<LogTimeTask>> GetLogTimeTasksByTaskId(long taskId)
+        {
+            logger.LogInformation($"Start function : {nameof(GetLogTimeTasksByTaskId)} ");
+            try
+            {
+                string query = @"SELECT * FROM LoggedTimes WHERE TaskId = @TaskId";
+                IEnumerable<LogTimeTask> result = await dbConnection.QueryAsync<LogTimeTask>(query, new { TaskId = taskId });
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in fucntion {nameof(GetLogTimeTasksByTaskId)}. More information: {ex.Message} ");
                 throw;
             }
         }
@@ -149,7 +165,7 @@ namespace OFI.Infrastructure.Task
 
                 string query = @"INSERT INTO LoggedTimes (TaskId, LoggedTime, LoggedDate) OUTPUT INSERTED.ID VALUES (@taskId, @loggedTime, @loggedDate)";
                 int result = await dbConnection.QuerySingleAsync<int>(query, model, transaction);
-                if(result == 0)
+                if (result == 0)
                 {
                     logger.LogError($"Error in repository function {LogTimeToTaskById}");
                     transaction.Rollback();

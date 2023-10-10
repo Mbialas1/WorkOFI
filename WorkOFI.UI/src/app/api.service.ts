@@ -4,6 +4,7 @@ import { Observable, throwIfEmpty } from 'rxjs';
 import { Task } from './models/task.model';
 import { StatusTaskDTO } from './models/statusTaskDTO.model';
 import { LogTimeModel } from './models/logTime.model';
+import { Log } from './models/log.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +33,10 @@ export class ApiService {
 
   logTimeToTask(logModel : LogTimeModel): Observable<any>{
     return this.http.post(`${this.apiUrl}/Tasks/task/logTimeToTask`, logModel);
+  }
+
+  getTimesLog(idTask: number) : Observable<Log[]>{
+    return this.http.get<Log[]>(`${this.apiUrl}/Tasks/logTime/${idTask}`);
   }
 
 }

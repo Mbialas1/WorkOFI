@@ -67,5 +67,15 @@ export class TaskDetailComponent implements OnInit {
       console.log('Dialog dismissed:', reason);
     });
   }
+
+  fetchTimeLogs(){
+    const detailsElement = document.querySelector('details.time-logs') as HTMLDetailsElement;
+  if (detailsElement && detailsElement.open && this.task && this.task.id > 0) {
+    this.apiService.getTimesLog(this.task.id).subscribe(data => {
+      this.timeLogs = data;
+      console.log('Logs download complete');
+    })
+  }
+  }
   
 }
