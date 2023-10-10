@@ -33,10 +33,16 @@ namespace OFI.Infrastructure.Handlers.Tasks.Queries
                 if (taskEntity is null || !(taskEntity.Id > 0))
                     throw new ArgumentNullException($"Cant find task by id: {request.TaskId}.");
 
-                UserDTO userDto = await userService.GetUserById(taskEntity.UserId);
-
-                if (userDto is null)
-                    throw new ArgumentNullException($"Cant find user by this id {taskEntity.Id} -- UserId: {taskEntity.UserId} dont exist.");
+                string assigneUser = string.Empty;
+                try
+                {
+                    UserDTO userDto = await userService.GetUserById(taskEntity.UserId);
+                    assigneUser = $"{userDto.FirstName} {userDto.LastName}";
+                }
+                catch
+                {
+                    assigneUser = "Unkown assigne"; 
+                }
 
                 return new TaskForDetailsDto
                 {
@@ -47,7 +53,7 @@ namespace OFI.Infrastructure.Handlers.Tasks.Queries
                     LastEditTime = DateTime.Now,
                     TottalRemaining = TimeOnly.Parse(taskEntity.TotalRemaining.ToString()),
                     TaskStatus = ((TaskStatusEnum)taskEntity.TaskStatus).ToString(),
-                    NameOfUser = $"{userDto.FirstName} {userDto.LastName}"
+                    NameOfUser = assigneUser
                 };
             }
             catch (Exception ex)
