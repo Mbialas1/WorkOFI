@@ -54,14 +54,13 @@ namespace OFI.Infrastructure.User
             throw new NotImplementedException();
         }
 
-        //TODO Return here normaln entities no DTO!
-        public async Task<IEnumerable<UserDashboardDTO>> GetUserDashboardDTOsAsync()
+        public async Task<IEnumerable<UserAggregate>> GetUserDashboardDTOsAsync()
         {
             logger.LogInformation($"START function : {nameof(GetUserDashboardDTOsAsync)} ");
             try
             {
                 const string query = "SELECT Id, FirstName, LastName FROM Users";
-                var users = await dbConnection.QueryAsync<UserDashboardDTO>(query);
+                var users = await dbConnection.QueryAsync<UserAggregate>(query);
                 return users;
             }
             catch (Exception ex)

@@ -12,7 +12,7 @@ namespace Core.InterfaceRepository
     public interface ITaskRepository
     {
         Task<bool> UpdateTaskStatus(UpdateTaskStatusDTO taskStatusDTO);
-        Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardDtos(long userId);
+        Task<IEnumerable<CompleteTaskInfo>> GetTaskForDashboardDtos(long userId);
         Task<IEnumerable<TaskAggregate>> GetByUserIdAsync(int userId);
         Task<TaskAggregate> AddAsync(TaskAggregate task);
         Task<CompleteTaskInfo> GetByIdAsync(long taskId);

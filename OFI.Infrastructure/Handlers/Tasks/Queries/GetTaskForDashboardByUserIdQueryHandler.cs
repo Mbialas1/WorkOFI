@@ -1,5 +1,7 @@
 ﻿using Core.Application.Dtos;
 using Core.Application.Queries;
+using Core.Entities.Task;
+using Core.Enums;
 using Core.InterfaceRepository;
 using Core.Services.InterfaceServices;
 using MediatR;
@@ -24,7 +26,18 @@ namespace OFI.Infrastructure.Handlers.Tasks.Queries
         {
             try
             {
-                return await taskRepository.GetTaskForDashboardDtos(request.UserId);
+                IEnumerable<CompleteTaskInfo> tasks = await taskRepository.GetTaskForDashboardDtos(request.UserId);
+
+                IEnumerable<TaskForDashboardDto> tasksDto = tasks
+                    .Select(task => new TaskForDashboardDto() {
+                        Id = task.Id,
+                        Name = task.Name,   
+                        Description = task.Description, 
+                        TaskStatus = ((TaskStatusEnum)task.TaskStatus).ToString(),
+                        TotalRemaing = new TimeOnly(task.TotalRemaining.Hours, task.TotalRemaining.Minutes)
+                    });
+
+                return tasksDto;
             }
             catch (Exception ex)
             {

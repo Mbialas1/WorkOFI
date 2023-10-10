@@ -1,5 +1,6 @@
 ﻿using Core.Application.Queries.Users;
 using Core.Dtos;
+using Core.Entities.User;
 using Core.InterfaceRepository;
 using Core.Services.InterfaceServices;
 using Core.Services.Services;
@@ -23,9 +24,16 @@ namespace OFI.Infrastructure.Handlers.Users.Queries
         {
             try
             {
-                var taskEntity = await userRepository.GetUserDashboardDTOsAsync();
+                IEnumerable<UserAggregate> users  = await userRepository.GetUserDashboardDTOsAsync();
+                IEnumerable<UserDashboardDTO> userDtos = users.Select(user => new UserDashboardDTO()
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName, 
+                    LastName = user.LastName
+                });
 
-                return taskEntity;
+
+                return userDtos;
             }
             catch (Exception ex)
             {

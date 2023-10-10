@@ -126,8 +126,7 @@ namespace OFI.Infrastructure.Task
             }
         }
 
-        //TODO Dont return dto's files
-        public async Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardDtos(long userId)
+        public async Task<IEnumerable<CompleteTaskInfo>> GetTaskForDashboardDtos(long userId)
         {
             logger.LogInformation($"Start function : {nameof(GetTaskForDashboardDtos)} ");
             try
@@ -139,9 +138,8 @@ namespace OFI.Infrastructure.Task
                 query.Append("JOIN TaskRemainingTimes r ON t.Id = r.TaskId ");
                 query.Append("WHERE t.UserId = @UserId ");
 
-                IEnumerable<TaskForDashboardDto> tasksFromDb = await dbConnection.QueryAsync<TaskForDashboardDto>(query.ToString(), new { UserId = userId });
-                tasksFromDb.ToList().ForEach(task => task.TaskStatus = ((TaskStatusEnum)int.Parse(task.TaskStatus)).ToString());
-                return tasksFromDb;
+                IEnumerable<CompleteTaskInfo> tasksDb = await dbConnection.QueryAsync<CompleteTaskInfo>(query.ToString(), new { UserId = userId });
+                return tasksDb;
             }
             catch (Exception ex)
             {
