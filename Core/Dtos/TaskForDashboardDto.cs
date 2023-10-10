@@ -13,6 +13,6 @@ namespace Core.Application.Dtos
         public string Name { get; set; }
         public string Description { get; set; }
         public string TaskStatus { get; set; }
-        public DateTime TotalRemaing { get; set; }
+        public TimeOnly TotalRemaing { get; set; }
     }
 }
