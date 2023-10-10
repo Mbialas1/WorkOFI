@@ -19,7 +19,7 @@
         <p><strong>Utworzone:</strong> {{ task.createdDate }}</p>
     </div>
 
-    <details class="time-logs">
+    <details class="time-logs" (toggle)="fetchTimeLogs()">
         <summary>Logi czasu</summary>
         <ul>
             <li *ngFor="let log of timeLogs">

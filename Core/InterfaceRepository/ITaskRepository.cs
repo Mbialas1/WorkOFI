@@ -18,5 +18,7 @@ namespace Core.InterfaceRepository
         Task<CompleteTaskInfo> GetByIdAsync(long taskId);
         Task<TimeOnly> GetLoggedTimeByIdTask(long taskId);
         Task<bool> LogTimeToTaskById(LogTimeTask model);
+
+        Task<IEnumerable<LogTimeTask>> GetLogTimeTasksByTaskId(long taskId);
     }
 }
