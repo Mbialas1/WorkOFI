@@ -126,7 +126,7 @@ namespace OFI.Infrastructure.Task
             }
         }
 
-        public async Task<IEnumerable<CompleteTaskInfo>> GetTaskForDashboardDtos(long userId)
+        public async Task<IEnumerable<CompleteTaskInfo>> GetTaskForDashboardDtos(long userId, int pageNumber = 1, int pageSize = 10)
         {
             logger.LogInformation($"Start function : {nameof(GetTaskForDashboardDtos)} ");
             try
@@ -137,8 +137,9 @@ namespace OFI.Infrastructure.Task
                 query.Append("JOIN TaskStatuses s ON t.Id = s.TaskId ");
                 query.Append("JOIN TaskRemainingTimes r ON t.Id = r.TaskId ");
                 query.Append("WHERE t.UserId = @UserId ");
+                query.Append("ORDER BY t.Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY");
 
-                IEnumerable<CompleteTaskInfo> tasksDb = await dbConnection.QueryAsync<CompleteTaskInfo>(query.ToString(), new { UserId = userId });
+                IEnumerable<CompleteTaskInfo> tasksDb = await dbConnection.QueryAsync<CompleteTaskInfo>(query.ToString(), new { UserId = userId, Offset = (pageNumber - 1) * pageSize, PageSize = pageSize });
                 return tasksDb;
             }
             catch (Exception ex)
