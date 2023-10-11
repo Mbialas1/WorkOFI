@@ -31,8 +31,8 @@ namespace OFI.TasksService.Api.Controllers
             this.logger = _logger;
         }
 
-        [HttpGet("logTime/{idTask}")]
-        public async Task<ActionResult<IEnumerable<LogDTO>>> GetLogTimeByTask(long idTask) 
+        [HttpGet("logTime/{idTask}/{page}/{pageSize}")]
+        public async Task<ActionResult<IEnumerable<LogDTO>>> GetLogTimeByTask(long idTask, int page, int pageSize) 
         {
             logger.LogInformation($"{nameof(GetLogTimeByTask)} function just started");
             try
@@ -43,7 +43,7 @@ namespace OFI.TasksService.Api.Controllers
                     return BadRequest("Inccorect taskId parameter");
                 }
 
-                var query = new GetLogTimeDetailByTaskIdQuery(idTask);
+                var query = new GetLogTimeDetailByTaskIdQuery(idTask, page, pageSize);
                 var result = await mediator.Send(query);
 
                 if(result is null)
@@ -112,8 +112,8 @@ namespace OFI.TasksService.Api.Controllers
             }
         }
 
-        [HttpGet("dashboard/{userId}")]
-        public async Task<ActionResult<IEnumerable<TaskForDashboardDto>>> GetTaskForDashboardByUserId(int userId)
+        [HttpGet("dashboard/{userId}/{page}/{pageSize}")]
+        public async Task<ActionResult<IEnumerable<TaskForDashboardDto>>> GetTaskForDashboardByUserId(long userId, int page, int pageSize)
         {
             logger.LogInformation($"{nameof(GetTaskForDashboardByUserId)} function just started");
             try
@@ -124,7 +124,7 @@ namespace OFI.TasksService.Api.Controllers
                     return BadRequest($"inncoretc user id = {userId}");
                 }
 
-                var query = new GetTasksForDashboardByUserIdQuery(userId);
+                var query = new GetTasksForDashboardByUserIdQuery(userId, page, pageSize);
                 var result = await mediator.Send(query);
 
                 return Ok(result);

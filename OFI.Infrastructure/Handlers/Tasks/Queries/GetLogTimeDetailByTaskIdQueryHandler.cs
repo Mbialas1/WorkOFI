@@ -24,7 +24,7 @@ namespace OFI.Infrastructure.Handlers.Tasks.Queries
         {
             try
             {
-                IEnumerable<LogTimeTask> result = await taskRepository.GetLogTimeTasksByTaskId(request.TaskId);
+                IEnumerable<LogTimeTask> result = await taskRepository.GetLogTimeTasksByTaskId(request.TaskId, request.Page, request.PageSize);
 
                 IEnumerable<LogDTO> logs = result.Select(s => new LogDTO()
                 {

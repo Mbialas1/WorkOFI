@@ -110,13 +110,15 @@ namespace OFI.Infrastructure.Task
             }
         }
 
-        public async Task<IEnumerable<LogTimeTask>> GetLogTimeTasksByTaskId(long taskId)
+        public async Task<IEnumerable<LogTimeTask>> GetLogTimeTasksByTaskId(long taskId, int page = 1, int pageSize = 10)
         {
             logger.LogInformation($"Start function : {nameof(GetLogTimeTasksByTaskId)} ");
             try
             {
-                string query = @"SELECT * FROM LoggedTimes WHERE TaskId = @TaskId";
-                IEnumerable<LogTimeTask> result = await dbConnection.QueryAsync<LogTimeTask>(query, new { TaskId = taskId });
+                int offset = (page - 1) * pageSize;
+
+                string query = @"SELECT * FROM LoggedTimes WHERE TaskId = @TaskId ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY";
+                IEnumerable<LogTimeTask> result = await dbConnection.QueryAsync<LogTimeTask>(query, new { TaskId = taskId, Offset = offset, PageSize = pageSize });
                 return result;
             }
             catch (Exception ex)

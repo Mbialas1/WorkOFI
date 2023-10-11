@@ -43,3 +43,8 @@
 table tr{
     cursor: pointer;
 }
+.scroll-container {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  

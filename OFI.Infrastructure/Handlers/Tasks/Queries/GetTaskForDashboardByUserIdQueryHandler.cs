@@ -26,7 +26,7 @@ namespace OFI.Infrastructure.Handlers.Tasks.Queries
         {
             try
             {
-                IEnumerable<CompleteTaskInfo> tasks = await taskRepository.GetTaskForDashboardDtos(request.UserId);
+                IEnumerable<CompleteTaskInfo> tasks = await taskRepository.GetTaskForDashboardDtos(request.UserId, request.Page, request.PageSize);
 
                 IEnumerable<TaskForDashboardDto> tasksDto = tasks
                     .Select(task => new TaskForDashboardDto() {

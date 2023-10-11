@@ -20,12 +20,14 @@
     </div>
 
     <details class="time-logs" (toggle)="fetchTimeLogs()">
+        <div class="scroll-container" infinite-scroll  [infiniteScrollDistance]="2" [infiniteScrollUpDistance]="1.5" [infiniteScrollThrottle]="100" [scrollWindow]="false" (scrolled)="loadMoreLogs()">
         <summary>Logi czasu</summary>
         <ul>
             <li *ngFor="let log of timeLogs">
                 {{ log.date }} - {{ log.timeSpent }} h/m
             </li>
         </ul>
+        </div>
     </details>
 
     <div class="comments" *ngIf="comments != null && comments.length > 0">

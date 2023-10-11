@@ -11,10 +11,13 @@ namespace Core.Application.Queries
     public class GetTasksForDashboardByUserIdQuery : IRequest<IEnumerable<TaskForDashboardDto>>
     {
         public long UserId { get; }
-
-        public GetTasksForDashboardByUserIdQuery(long userId)
+        public int Page { get; }
+        public int PageSize { get; }
+        public GetTasksForDashboardByUserIdQuery(long userId, int page, int pageSize)
         {
             UserId = userId;
+            Page = page;
+            PageSize = pageSize;
         }
     }
 }
