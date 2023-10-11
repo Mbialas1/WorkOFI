@@ -23,8 +23,8 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/Tasks/addTask`, task);
   }
 
-  loadDashboardByUserId(idUser: number): Observable<Task[]>{
-    return this.http.get<Task[]>(`${this.apiUrl}/Tasks/dashboard/${idUser}`);
+  loadDashboardByUserId(idUser: number, page: number, pageSize: number): Observable<Task[]>{
+    return this.http.get<Task[]>(`${this.apiUrl}/Tasks/dashboard/${idUser}/${page}/${pageSize}`);
   }
 
   updateTaskStatus(task: StatusTaskDTO): Observable<any> {
@@ -35,8 +35,8 @@ export class ApiService {
     return this.http.post(`${this.apiUrl}/Tasks/task/logTimeToTask`, logModel);
   }
 
-  getTimesLog(idTask: number) : Observable<Log[]>{
-    return this.http.get<Log[]>(`${this.apiUrl}/Tasks/logTime/${idTask}`);
+  getTimesLog(idTask: number, page : number, pageSize : number) : Observable<Log[]>{
+    return this.http.get<Log[]>(`${this.apiUrl}/Tasks/logTime/${idTask}/${page}/${pageSize}`);
   }
 
 }

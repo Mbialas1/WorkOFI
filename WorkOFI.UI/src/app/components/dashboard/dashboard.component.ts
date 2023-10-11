@@ -14,6 +14,9 @@ export class DashboardComponent {
   tasks: Task[] = [];
   users: User[] = [];
   selectedUser? : User;
+  page: number = 1;
+  pageSize: number = 10;
+  isAllTasksLoaded: boolean = false;
 
   constructor(private userService: UserService, private taskService: ApiService, private router: Router){}
 
@@ -41,13 +44,22 @@ export class DashboardComponent {
   }
 
   onUserChanged() {
+    console.log('User change');
+    this.page = 1;
+    this.pageSize = 10;
+    this.isAllTasksLoaded = false;
+    this.tasks = [];
     this.refreshTasksForSelectedUser();
   }
 
   refreshTasksForSelectedUser() {
-    if(this.selectedUser) {
-      this.taskService.loadDashboardByUserId(this.selectedUser.id).subscribe(data => {
-        this.tasks = data;
+    if(this.selectedUser && !this.isAllTasksLoaded) {
+      this.taskService.loadDashboardByUserId(this.selectedUser.id, this.page, this.pageSize).subscribe(data => {
+        if(data.length < this.pageSize){
+          this.isAllTasksLoaded = true;
+        }
+        this.tasks = [...this.tasks, ...data];
+        this.page++;
       });
     }
   }

@@ -55,3 +55,8 @@ textarea {
     border-radius: 3px;
     resize: none;
 }
+
+.scroll-container {
+    max-height: 200px;
+    overflow-y: auto;
+  }

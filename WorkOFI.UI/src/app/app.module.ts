@@ -13,6 +13,8 @@ import { AddTaskDialogComponent } from './components/add-task-dialog/add-task-di
 import { FormsModule } from '@angular/forms';
 import { LogTimeDialogComponent } from './components/log-time/log-time.component';
 
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -27,7 +29,8 @@ import { LogTimeDialogComponent } from './components/log-time/log-time.component
     FormsModule,
     HttpClientModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+    InfiniteScrollModule
   ],
   providers: [],
   bootstrap: [AppComponent]

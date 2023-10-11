@@ -18,8 +18,11 @@ export class TaskDetailComponent implements OnInit {
   constructor(private apiService: ApiService, private route: ActivatedRoute, private modalService: NgbModal) { }
 
   task?: Task;
-  timeLogs? : Log[];
+  timeLogs : Log[] = [];
   comments? : Comment[];
+  page: number = 1;
+  pageSize: number = 10;
+  isAllTasksLoaded: boolean = false;
 
   ngOnInit(): void {
     const idValue = this.route.snapshot.paramMap.get('id');
@@ -71,11 +74,20 @@ export class TaskDetailComponent implements OnInit {
   fetchTimeLogs(){
     const detailsElement = document.querySelector('details.time-logs') as HTMLDetailsElement;
   if (detailsElement && detailsElement.open && this.task && this.task.id > 0) {
-    this.apiService.getTimesLog(this.task.id).subscribe(data => {
-      this.timeLogs = data;
+    this.apiService.getTimesLog(this.task.id, this.page, this.pageSize).subscribe(data => {
+      if(data.length < this.pageSize){
+        this.isAllTasksLoaded = true;
+      }
+      this.timeLogs =  [...this.timeLogs, ...data];
+      this.page++;
       console.log('Logs download complete');
     })
   }
   }
   
+  loadMoreLogs(){
+    if(!this.isAllTasksLoaded){
+      this.fetchTimeLogs();
+    }
+  }
 }

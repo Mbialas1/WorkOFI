@@ -2,7 +2,7 @@
     <option *ngFor="let user of users" [ngValue]="user">{{ user.firstName + user.lastName }}</option>
   </select>
 
-  <div class="container-fluid mt-5">
+  <div class="scroll-container" infinite-scroll  [infiniteScrollDistance]="2" [infiniteScrollUpDistance]="1.5" [infiniteScrollThrottle]="100" [scrollWindow]="false" (scrolled)="refreshTasksForSelectedUser()"> 
     <h2>Lista zadań</h2>
     <table class="table table-bordered table-hover">
         <thead class="thead-dark">
