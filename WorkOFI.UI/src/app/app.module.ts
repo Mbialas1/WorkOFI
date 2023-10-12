@@ -14,6 +14,12 @@ import { FormsModule } from '@angular/forms';
 import { LogTimeDialogComponent } from './components/log-time/log-time.component';
 
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -30,7 +36,12 @@ import { InfiniteScrollModule } from 'ngx-infinite-scroll';
     HttpClientModule,
     AppRoutingModule,
     NgbModule,
-    InfiniteScrollModule
+    InfiniteScrollModule,
+    MatAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

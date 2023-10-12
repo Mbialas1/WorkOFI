@@ -15,5 +15,10 @@ import { User } from './models/user.model';
       return this.http.get<User[]>(`${this.apiUrl}/Users/users/allUsers`);
     }
 
+    
+
+searchUsers(query: string): Observable<User[]> {
+  return this.http.get<User[]>(`${this.apiUrl}/Users/users/search`, { params: { characters: query } });
+}
   }
   

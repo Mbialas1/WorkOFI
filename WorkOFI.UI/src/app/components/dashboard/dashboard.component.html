@@ -1,6 +1,12 @@
-<select [(ngModel)]="selectedUser" (change)="onUserChanged()">
-    <option *ngFor="let user of users" [ngValue]="user">{{ user.firstName + user.lastName }}</option>
-  </select>
+ <mat-form-field>
+    <input type="text" matInput [formControl]="userControl" [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" >
+      <mat-option *ngFor="let user of filteredUsers | async" [value]="user" (click)="onUserChanged(user)">
+        {{ user.firstName + ' ' + user.lastName }}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  
 
   <div class="scroll-container" infinite-scroll  [infiniteScrollDistance]="2" [infiniteScrollUpDistance]="1.5" [infiniteScrollThrottle]="100" [scrollWindow]="false" (scrolled)="refreshTasksForSelectedUser()"> 
     <h2>Lista zadań</h2>

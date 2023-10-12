@@ -14,5 +14,6 @@ namespace Core.InterfaceRepository
         Task<UserAggregate> GetAsync(long id);
         Task<UserAggregate> GetByUsernameAsync(string username);
         Task AddAsync(UserAggregate user);
+        Task<IEnumerable<UserAggregate>> GetUsersToFiltr(string characters);
     }
 }
