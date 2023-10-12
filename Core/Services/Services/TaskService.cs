@@ -18,7 +18,7 @@ namespace Core.Services.Services
             taskRepository = _taskRepository;
         }
 
-        public async Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardByUserId(int userId)
+        public Task<IEnumerable<TaskForDashboardDto>> GetTaskForDashboardByUserId(int userId)
         {
             throw new NotImplementedException();
             //var tasks = await taskRepository.GetByUserIdAsync(userId);

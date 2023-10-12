@@ -8,7 +8,7 @@ namespace Core.Dtos
 {
     public class LogTimeTaskDTO
     {
-        public string Time { get ; set; }   
+        public string Time { get; set; } = string.Empty;   
         public long TaskId { get; set; }
     }
 }
