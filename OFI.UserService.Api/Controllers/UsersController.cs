@@ -7,6 +7,7 @@ using Core.Enums;
 using Core.InterfaceRepository;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace OFI.UserService.Api.Controllers
@@ -25,6 +26,37 @@ namespace OFI.UserService.Api.Controllers
             this.logger = _logger;
         }
 
+        [HttpGet("users/search")]
+        public async Task<ActionResult<IEnumerable<UserDashboardDTO>>> SearchUserForFiltr([FromQuery] string characters)
+        {
+            logger.LogInformation($"{nameof(SearchUserForFiltr)} function just started");
+            try
+            {
+                if (string.IsNullOrEmpty(characters))
+                {
+                    logger.LogError("Characters is null!");
+                    return BadRequest("Character is null");
+                }
+                else
+                {
+                    if(!Regex.IsMatch(characters, @"^[a-zA-Z]+$")) {
+                        logger.LogError($"{nameof(SearchUserForFiltr)} only letters in charcters");
+                        return BadRequest("Only letters please in characters");
+                    }
+
+                    var query = new GetUsersByFiltrQuery(characters);
+                    var users = await mediator.Send(query);
+
+                    return Ok(users);   
+                }
+            }
+            catch(Exception ex)
+            {
+                logger.LogError($"Error in {nameof(SearchUserForFiltr)} with detail error : {ex.Message} ");
+                return BadRequest();
+            }
+        }
+
         [HttpGet("users/{userId}")]
         public async Task<ActionResult<UserDTO>> GetUserById(long userId)
         {
@@ -41,7 +73,7 @@ namespace OFI.UserService.Api.Controllers
 
                 return Ok(user);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError($"Error in {nameof(GetUserById)} with detail error : {ex.Message} ");
                 return BadRequest("Cant get user by this id");

@@ -69,5 +69,24 @@ namespace OFI.Infrastructure.User
                 throw;
             }
         }
+
+        public async Task<IEnumerable<UserAggregate>> GetUsersToFiltr(string characters)
+        {
+            logger.LogInformation($"START function : {nameof(GetUsersToFiltr)} ");
+            try
+            {
+                string query = @"SELECT TOP 10 * FROM Users 
+                         WHERE CONTAINS((FirstName, LastName), @Characters) ORDER BY FirstName, LastName";
+
+                var users = await dbConnection.QueryAsync<UserAggregate>(query, new { Characters = $"\"{characters}*\"" });
+
+                return users;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in funciton {nameof(GetUsersToFiltr)}. More information: {ex.Message}");
+                throw;
+            }
+        }
     }
 }

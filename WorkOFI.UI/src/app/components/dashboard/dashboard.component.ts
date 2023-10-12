@@ -4,6 +4,9 @@ import { Task } from 'src/app/models/task.model';
 import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/user.service';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,12 +14,20 @@ import { Router } from '@angular/router';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
+  userControl = new FormControl();
   tasks: Task[] = [];
   users: User[] = [];
   selectedUser? : User;
   page: number = 1;
   pageSize: number = 10;
   isAllTasksLoaded: boolean = false;
+  filteredUsers = this.userControl.valueChanges.pipe(
+    debounceTime(300), 
+    distinctUntilChanged(),
+    filter(query => query && query.length > 2 && /^[a-zA-Z\s]+$/.test(query)),
+    switchMap(query => this.userService.searchUsers(query.toLowerCase())) 
+  );
+  
 
   constructor(private userService: UserService, private taskService: ApiService, private router: Router){}
 
@@ -32,18 +43,15 @@ export class DashboardComponent {
  }
 
   ngOnInit(): void {
-    this.userService.getAllUsers().subscribe(data => {
-      this.users = data;
-      if(this.users.length > 0) {
-        this.selectedUser = this.users[0];
-        this.refreshTasksForSelectedUser();
-      }
-      else{
-      this.defaultView();}
-    });
+      this.defaultView();
   }
 
-  onUserChanged() {
+  displayFn(user?: User): string {
+    return user ? user.firstName + ' ' + user.lastName : '';
+  }
+
+  onUserChanged(selUser: User) {
+    this.selectedUser = selUser;
     console.log('User change');
     this.page = 1;
     this.pageSize = 10;
