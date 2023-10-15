@@ -16,7 +16,7 @@ WorkOFI is a modern task management system based on a microservices architecture
 - **Database**: Microsoft SQL Server
 - **Communication between services**: MediatR
 - **Architecture**: DDD (Domain-Driven Design) and CQRS (Command Query Responsibility Segregation)
-- **Others**: Dapper, Serilog, Bootstrap, Redis
+- **Others**: Dapper, Serilog, Bootstrap, Redis, Docker
 
 ## 🚀 Collaboration
 
