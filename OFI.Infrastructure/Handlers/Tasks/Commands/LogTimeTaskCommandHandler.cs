@@ -49,7 +49,7 @@ namespace OFI.Infrastructure.Handlers.Tasks.Commands
                     throw new ArgumentException("Cant logg time to task");
                 }
 
-                return null;
+                return new LogTimeTaskDTO();
             }
             catch
             {

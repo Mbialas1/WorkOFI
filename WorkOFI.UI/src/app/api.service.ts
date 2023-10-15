@@ -11,7 +11,7 @@ import { Log } from './models/log.model';
 })
 export class ApiService {
 
-  private apiUrl = 'http://localhost:5089';
+  private apiUrl = 'http://localhost:8081';
 
   constructor(private http: HttpClient) { }
 

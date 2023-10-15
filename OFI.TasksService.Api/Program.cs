@@ -36,24 +36,22 @@ builder.Services.AddMediatR(cfg =>
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAllOrigins",
-        builder =>
-        {
-            builder
-            .AllowAnyOrigin()
-            .AllowAnyMethod()
-            .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowAngularApp", builder =>
+    {
+        builder.WithOrigins("http://localhost:8082", "http://localhost:8080")
+               .AllowAnyHeader()
+               .AllowAnyMethod();
+    });
 });
 
 builder.Services.AddHttpClient<IUserService, UserCommunicationService>(client =>
 {
-    client.BaseAddress = new Uri(builder.Configuration[ServicesHelper.User_api_services_configuration]);
-}
-);
+    client.BaseAddress = new Uri(builder.Configuration[ServicesHelper.User_api_services_configuration]!);
+});
+
 
 var app = builder.Build();
-app.UseCors("AllowAllOrigins");
+app.UseCors("AllowAngularApp");
 app.UseRouting();
 app.MapControllers();
 

@@ -42,7 +42,7 @@ namespace OFI.Infrastructure.Handlers.Tasks.Commands
 
                 return await _taskRepository.AddAsync(taskEntity);
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }

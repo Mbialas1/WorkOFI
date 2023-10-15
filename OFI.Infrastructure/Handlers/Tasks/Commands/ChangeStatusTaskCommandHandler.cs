@@ -30,7 +30,7 @@ namespace OFI.Infrastructure.Handlers.Tasks.Commands
                     throw new ValidationException();
                 }
 
-                return null; //Not need return anything
+                return new UpdateTaskStatusDTO(); //Not need return anything
             }
             catch
             {

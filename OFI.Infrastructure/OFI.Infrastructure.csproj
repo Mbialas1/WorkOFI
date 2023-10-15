@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -22,12 +22,6 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\OFI.Common\OFI.Common.csproj" />
     <ProjectReference Include="..\OFI.Infrastructure.Common\OFI.Infrastructure.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
