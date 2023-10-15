@@ -29,9 +29,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OFI.Common", "OFI.Common\OF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OFI.Infrastructure.Identity", "OFI.Infrastructure.Identity\OFI.Infrastructure.Identity.csproj", "{91E4AFEF-12FC-428D-ABC0-908C51754322}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFI.Infrastructure.User", "OFI.Infrastructure.User\OFI.Infrastructure.User.csproj", "{A32F244F-9CE2-49CF-B2A4-06805B70CD8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OFI.Infrastructure.User", "OFI.Infrastructure.User\OFI.Infrastructure.User.csproj", "{A32F244F-9CE2-49CF-B2A4-06805B70CD8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OFI.Infrastructure.Common", "OFI.Infrastructure.Common\OFI.Infrastructure.Common.csproj", "{B9D5CB50-AFAC-48B9-9008-E87FAF6F0EC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OFI.Infrastructure.Common", "OFI.Infrastructure.Common\OFI.Infrastructure.Common.csproj", "{B9D5CB50-AFAC-48B9-9008-E87FAF6F0EC7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8847CED2-D8B3-4FEA-B71B-1E28BCC975FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

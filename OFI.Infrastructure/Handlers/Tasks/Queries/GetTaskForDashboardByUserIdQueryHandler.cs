@@ -39,7 +39,7 @@ namespace OFI.Infrastructure.Handlers.Tasks.Queries
 
                 return tasksDto;
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }

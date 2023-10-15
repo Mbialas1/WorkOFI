@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  api_users:
+    image: ofi.userserviceapi:latest
+    ports:
+      - "8080:80"
+    networks:
+      - mynetwork
+
+  api_tasks:
+    image: ofi.taskserviceapi:latest
+    ports:
+      - "8081:80"
+    networks:
+      - mynetwork
+
+  ui_angular:
+    image: workofi-ui:latest
+    ports:
+     - "8082:80"
+    networks:
+     - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge

@@ -56,7 +56,7 @@ namespace OFI.Infrastructure.Handlers.Tasks.Queries
                     NameOfUser = assigneUser
                 };
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }

@@ -75,7 +75,7 @@ namespace OFI.TasksService.Api.Controllers
                 }
 
                 var command = new LogTimeTaskCommand(logTimeTaskDTO);
-                mediator.Send(command);
+                await mediator.Send(command);
 
                 return Accepted();
             }
@@ -101,7 +101,7 @@ namespace OFI.TasksService.Api.Controllers
                 }
 
                 var command = new ChangeStatusTaskCommand(taskStatusDto);
-                mediator.Send(command);
+                await mediator.Send(command);
 
                 return Accepted();
             }
