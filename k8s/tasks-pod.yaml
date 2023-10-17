@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: tasks-pod
+  labels:
+    app: api-tasks
+spec:
+  containers:
+  - name: tasks-container
+    image: ofi.taskserviceapi:latest
+    ports:
+    - containerPort: 8081

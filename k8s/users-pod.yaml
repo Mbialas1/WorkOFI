@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: users-pod
+  labels:
+    app: api-users
+spec:
+  containers:
+  - name: users-container
+    image: ofi.userserviceapi:latest
+    ports:
+    - containerPort: 8080

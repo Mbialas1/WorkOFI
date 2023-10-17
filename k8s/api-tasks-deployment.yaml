@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-tasks-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-tasks
+  template:
+    metadata:
+      labels:
+        app: api-tasks
+    spec:
+      containers:
+      - name: api-tasks
+        image: ofi.taskserviceapi:latest
+        ports:
+        - containerPort: 8081

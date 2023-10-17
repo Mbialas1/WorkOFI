@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-users-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: api-users
+  template:
+    metadata:
+      labels:
+        app: api-users
+    spec:
+      containers:
+      - name: api-users
+        image: ofi.userserviceapi:latest
+        ports:
+        - containerPort: 8080
