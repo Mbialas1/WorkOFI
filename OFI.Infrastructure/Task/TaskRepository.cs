@@ -17,6 +17,9 @@ using Core.Application.Dtos;
 using Core.Enums;
 using Core.Dtos;
 using System.ComponentModel.DataAnnotations;
+using StackExchange.Redis;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace OFI.Infrastructure.Task
 {
@@ -24,10 +27,12 @@ namespace OFI.Infrastructure.Task
     {
         private readonly IDbConnection dbConnection;
         private readonly ILogger<TaskRepository> logger;
-        public TaskRepository(IConfiguration configuration, ILogger<TaskRepository> _logger)
+        private readonly IDatabase redisDb; 
+        public TaskRepository(IConfiguration configuration, ILogger<TaskRepository> _logger, IConnectionMultiplexer _redisDb)
         {
             dbConnection = ConnectionHelper.GetSqlConnection(configuration);
             logger = _logger;
+            redisDb = _redisDb.GetDatabase();
         }
 
         public async Task<TaskAggregate> AddAsync(TaskAggregate task)
@@ -59,6 +64,22 @@ namespace OFI.Infrastructure.Task
 
                 task.Id = insertedId;
 
+                task.TotalRemaining = defaultTime;
+                task.TaskStatus = TaskStatusEnum.OnHold;
+
+                //redis
+                logger.LogInformation($"Attempting to add task with ID {task.Id} to Redis.");
+                try
+                {
+                    var taskSerialized = JsonConvert.SerializeObject(task);
+                    await redisDb.StringSetAsync($"Task: {task.Id}", taskSerialized, TimeSpan.FromMinutes(5));
+                    logger.LogInformation($"Successfully added task with ID {task.Id} to Redis with TTL of 5 minutes.");
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError($"Failed to add task with ID {task.Id} to Redis. Error: {ex.Message}");
+                }
+
                 return task;
             }
             catch (Exception ex)
@@ -73,6 +94,14 @@ namespace OFI.Infrastructure.Task
             logger.LogInformation($"START function : {nameof(GetByIdAsync)} ");
             try
             {
+                var redisKey = $"Task:{_taskId}";
+                var taskFromRedis = redisDb.StringGet(redisKey);
+                if (taskFromRedis.HasValue)
+                {
+                    Log.Information($"{_taskId} was get from redis.");
+                    return JsonConvert.DeserializeObject<CompleteTaskInfo>(taskFromRedis);
+                }
+
                 StringBuilder query = new StringBuilder();
                 query.Append("SELECT t.Id, t.Name, t.Description, t.UserId, t.CreatedDate, tr.TotalRemaining, ts.TaskStatus ");
                 query.Append("FROM Tasks t ");
@@ -80,7 +109,14 @@ namespace OFI.Infrastructure.Task
                 query.Append("LEFT JOIN TaskStatuses ts ON t.Id = ts.TaskId ");
                 query.Append("WHERE t.Id = @taskId ");
 
-                return await dbConnection.QuerySingleOrDefaultAsync<CompleteTaskInfo>(query.ToString(), new { taskId = _taskId });
+                var taskFromDb = await dbConnection.QuerySingleOrDefaultAsync<CompleteTaskInfo>(query.ToString(), new { taskId = _taskId });
+                if (taskFromDb != null)
+                {
+                    redisDb.StringSet(redisKey, JsonConvert.SerializeObject(taskFromDb), TimeSpan.FromMinutes(5));
+                    logger.LogInformation($"{_taskId} was add to redisDb");
+                }
+
+                return taskFromDb;
             }
             catch (Exception ex)
             {

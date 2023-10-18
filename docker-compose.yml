@@ -22,6 +22,20 @@ services:
     networks:
      - mynetwork
 
+  redis_tasks:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+     - mynetwork
+  redis_users:
+    image: redis
+    ports:
+      - "6380:6379"
+    networks:
+     - mynetwork
+
+
 networks:
   mynetwork:
     driver: bridge

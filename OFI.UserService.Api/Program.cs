@@ -6,6 +6,8 @@ using Serilog.Events;
 using Serilog;
 using OFI.Infrastructure.User;
 using OFI.Infrastructure.Handlers.Users.Queries;
+using StackExchange.Redis;
+using Core.Application.Services.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +38,10 @@ builder.Services.AddCors(options =>
     });
 });
 
-
+#region redis
+var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration.GetSection(ServicesHelper.Redis_task_services_configuration).Value ?? string.Empty);
+builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+#endregion
 
 var app = builder.Build();
 app.UseCors("AllowAngularApp");
