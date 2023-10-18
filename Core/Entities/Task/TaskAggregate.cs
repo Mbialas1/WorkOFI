@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,7 @@ namespace Core.Entities.Task
         public string Description { get; set; } = string.Empty;
         public DateTime CreatedDate { get; set; }
         public DateTime UpdatedDate { get; set; }
+        public TaskStatusEnum TaskStatus { get; set; }
+        public TimeSpan TotalRemaining { get; set; }
     }
 }

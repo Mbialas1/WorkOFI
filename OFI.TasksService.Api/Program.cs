@@ -13,6 +13,9 @@ using Serilog.Events;
 using OFI.Infrastructure.Handlers.Tasks.Commands;
 using Core.Application.Services;
 using Core.Application.Services.Helpers;
+using Microsoft.Extensions.Configuration;
+using StackExchange.Redis;
+using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,8 +52,13 @@ builder.Services.AddHttpClient<IUserService, UserCommunicationService>(client =>
     client.BaseAddress = new Uri(builder.Configuration[ServicesHelper.User_api_services_configuration]!);
 });
 
+#region redis
+var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration.GetSection(ServicesHelper.Redis_task_services_configuration).Value ?? string.Empty);
+builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+#endregion
 
 var app = builder.Build();
+
 app.UseCors("AllowAngularApp");
 app.UseRouting();
 app.MapControllers();
