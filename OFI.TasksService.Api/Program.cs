@@ -16,6 +16,7 @@ using Core.Application.Services.Helpers;
 using Microsoft.Extensions.Configuration;
 using StackExchange.Redis;
 using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,8 +54,33 @@ builder.Services.AddHttpClient<IUserService, UserCommunicationService>(client =>
 });
 
 #region redis
-var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration.GetSection(ServicesHelper.Redis_task_services_configuration).Value ?? string.Empty);
+var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration.GetSection(ServicesHelper.Redis_task_services_configuration).Value ?? String.Empty);
 builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+#endregion
+
+
+#region RabbitMQ
+builder.Services.AddSingleton<IConnectionFactory, ConnectionFactory>(sp =>
+{
+    return new ConnectionFactory
+    {
+        HostName = builder.Configuration[ServicesHelper.Rabbit_host_configuration],
+        UserName = builder.Configuration[ServicesHelper.Rabbit_user_configuration],
+        Password = builder.Configuration[ServicesHelper.Rabbit_password_configuration]
+    };
+});
+
+builder.Services.AddSingleton<IConnection>(sp =>
+{
+    var factory = sp.GetRequiredService<IConnectionFactory>();
+    return factory.CreateConnection();
+});
+
+builder.Services.AddSingleton<IModel>(sp =>
+{
+    var connection = sp.GetRequiredService<IConnection>();
+    return connection.CreateModel();
+});
 #endregion
 
 var app = builder.Build();

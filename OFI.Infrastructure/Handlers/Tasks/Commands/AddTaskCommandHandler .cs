@@ -3,6 +3,8 @@ using Core.Entities.Task;
 using Core.InterfaceRepository;
 using Core.Services.InterfaceServices;
 using MediatR;
+using OFI.Infrastructure.RabbitMQ;
+using RabbitMQ.Client;
 using Serilog;
 using System;
 using System.Collections.Generic;
@@ -16,10 +18,13 @@ namespace OFI.Infrastructure.Handlers.Tasks.Commands
     {
         private readonly ITaskRepository _taskRepository;
         private readonly IUserService userService;
-        public AddTaskCommandHandler(ITaskRepository taskRepository, IUserService _userService)
+        private readonly IModel channel;
+        private const string MESSAGE_NAME_QUEUE = "TaskMessage";
+        public AddTaskCommandHandler(ITaskRepository taskRepository, IUserService _userService, IModel _channel)
         {
             _taskRepository = taskRepository;
             userService = _userService;
+            channel = _channel;
         }
 
         public async Task<TaskAggregate> Handle(AddTaskCommand request, CancellationToken cancellationToken)
@@ -40,7 +45,21 @@ namespace OFI.Infrastructure.Handlers.Tasks.Commands
                     UserId = request.TaskDto.AssignedUserId
                 };
 
-                return await _taskRepository.AddAsync(taskEntity);
+                var newTask =  await _taskRepository.AddAsync(taskEntity);
+
+                if(newTask != null)
+                {
+                    var message = new
+                    {
+                        TaskId = newTask.Id,
+                        UserId = newTask.UserId
+                    };
+                    //TODO Container here for resolved by interface
+                    var rabbitMsg = new TaskRabbitHandler(channel);
+                    rabbitMsg.SendMessage(message, Common.ServicesNameEnum.UsersService, MESSAGE_NAME_QUEUE);
+                }
+
+                return newTask;
             }
             catch
             {
