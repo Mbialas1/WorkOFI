@@ -7,6 +7,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using OFI.Infrastructure.Helpers;
+using OFI.Infrastructure.User.RabbitMQ.Models;
 using Serilog.Core;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,21 @@ namespace OFI.Infrastructure.User
         public System.Threading.Tasks.Task AddAsync(Core.Entities.User.UserAggregate user)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task AddTaskToUser(TaskMessage taskMessage)
+        {
+            logger.LogInformation($"START function : {nameof(AddTaskToUser)} ");
+            try
+            {
+                const string query = "INSERT INTO UsersTask (id_user, id_task) VALUES (@UserId, @TaskId); ";
+                await dbConnection.ExecuteAsync(query, new { UserId = taskMessage.UserId, TaskId = taskMessage.TaskId });
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in funciton {nameof(AddTaskToUser)}. More information: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<Core.Entities.User.UserAggregate> GetAsync(long userId)

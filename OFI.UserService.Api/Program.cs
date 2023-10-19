@@ -8,6 +8,9 @@ using OFI.Infrastructure.User;
 using OFI.Infrastructure.Handlers.Users.Queries;
 using StackExchange.Redis;
 using Core.Application.Services.Helpers;
+using RabbitMQ.Client;
+using Core.RabbitMQ;
+using OFI.Infrastructure.User.RabbitMQ;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,8 @@ Log.Logger = new LoggerConfiguration()
 
 // Add services to the container.
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+builder.Services.AddSingleton<RabbitMqConsumer>();
 
 builder.Services.AddControllers();
 builder.Services.AddTransient<GetAllUsersForDashboardQueriesHandler, GetAllUsersForDashboardQueriesHandler>();
@@ -39,11 +44,43 @@ builder.Services.AddCors(options =>
 });
 
 #region redis
-var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration.GetSection(ServicesHelper.Redis_task_services_configuration).Value ?? string.Empty);
-builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+//var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration.GetSection(ServicesHelper.Redis_task_services_configuration).Value ?? String.Empty);
+//builder.Services.AddSingleton<IConnectionMultiplexer>(multiplexer);
+#endregion
+
+#region RabbitMQ
+builder.Services.AddSingleton<IConnectionFactory, ConnectionFactory>(sp =>
+{
+    return new ConnectionFactory
+    {
+        HostName = builder.Configuration[ServicesHelper.Rabbit_host_configuration],
+        UserName = builder.Configuration[ServicesHelper.Rabbit_user_configuration],
+        Password = builder.Configuration[ServicesHelper.Rabbit_password_configuration]
+    };
+});
+
+builder.Services.AddSingleton<IConnection>(sp =>
+{
+    var factory = sp.GetRequiredService<IConnectionFactory>();
+    return factory.CreateConnection();
+});
+
+builder.Services.AddSingleton<IModel>(sp =>
+{
+    var connection = sp.GetRequiredService<IConnection>();
+    return connection.CreateModel();
+});
 #endregion
 
 var app = builder.Build();
+
+#region RabbitMQ initialize
+var channel = app.Services.GetRequiredService<IModel>();
+RabbitMqSetup.Initialize(channel);  // je¿eli RabbitMqSetup tworzy kolejkê, to jest to odpowiednie miejsce
+var consumer = app.Services.GetRequiredService<RabbitMqConsumer>();
+consumer.InitializeConsumer();
+#endregion
+
 app.UseCors("AllowAngularApp");
 app.UseRouting();
 app.MapControllers();
