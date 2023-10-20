@@ -1,5 +1,5 @@
 <div class="nav-container">
-    <app-nav-menu></app-nav-menu>
+    <app-nav-menu *ngIf="isLoggedIn"></app-nav-menu>
   </div>
   <router-outlet></router-outlet>  
 <app-task-detail *ngIf="showTaskDetails"></app-task-detail>
