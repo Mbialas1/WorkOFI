@@ -10,4 +10,5 @@ export class AppComponent {
 
   title = 'WorkOFI.UI';
   showTaskDetails = false;
+  isLoggedIn = false;
 }

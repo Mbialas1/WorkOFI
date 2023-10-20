@@ -1,0 +1,37 @@
+<div class="container mt-5">
+    <div *ngIf="showLogin" class="card">
+        <div class="card-body">
+            <h4 class="card-title">Logowanie</h4>
+            <div class="form-group">
+                <label for="loginUsername">Login:</label>
+                <input type="text" class="form-control" id="loginUsername" [(ngModel)]="loginUsername">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Hasło:</label>
+                <input type="password" class="form-control" id="loginPassword" [(ngModel)]="loginPassword">
+            </div>
+            <button class="btn btn-primary" (click)="handleLogin()">Zaloguj</button>
+            <p class="mt-3"><a (click)="switchToRegister()">Rejestruj</a></p>
+        </div>
+    </div>
+
+    <div *ngIf="!showLogin" class="card">
+        <div class="card-body">
+            <h4 class="card-title">Rejestracja</h4>
+            <div class="form-group">
+                <label for="registerUsername">Login:</label>
+                <input type="text" class="form-control" id="registerUsername" [(ngModel)]="registerUsername">
+            </div>
+            <div class="form-group">
+                <label for="registerPassword">Hasło:</label>
+                <input type="password" class="form-control" id="registerPassword" [(ngModel)]="registerPassword">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Potwierdź hasło:</label>
+                <input type="password" class="form-control" id="confirmPassword" [(ngModel)]="confirmPassword">
+            </div>
+            <button class="btn btn-success" (click)="handleRegister()">Zarejestruj</button>
+            <button class="btn btn-secondary" (click)="switchToLogin()">Anuluj</button>
+        </div>
+    </div>
+</div>

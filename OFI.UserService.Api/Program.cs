@@ -11,6 +11,9 @@ using Core.Application.Services.Helpers;
 using RabbitMQ.Client;
 using Core.RabbitMQ;
 using OFI.Infrastructure.User.RabbitMQ;
+using Microsoft.Extensions.Configuration;
+using Core.Security.Settings;
+using Core.Security.Generator;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +73,11 @@ builder.Services.AddSingleton<IModel>(sp =>
     var connection = sp.GetRequiredService<IConnection>();
     return connection.CreateModel();
 });
+#endregion
+
+#region JWT
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+builder.Services.AddSingleton<JwtTokenGenerator>();
 #endregion
 
 var app = builder.Build();
