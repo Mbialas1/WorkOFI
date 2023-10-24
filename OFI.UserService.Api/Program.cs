@@ -76,8 +76,8 @@ builder.Services.AddSingleton<IModel>(sp =>
 #endregion
 
 #region JWT
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-builder.Services.AddSingleton<JwtTokenGenerator>();
+//builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+//builder.Services.AddSingleton<JwtTokenGenerator>();
 #endregion
 
 var app = builder.Build();

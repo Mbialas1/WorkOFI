@@ -1,4 +1,6 @@
-﻿using Core.Dtos;
+﻿using Core.Authorization.Dtos;
+using Core.Authorization.Models;
+using Core.Dtos;
 using Core.Entities.Task;
 using Core.Entities.User;
 using Core.InterfaceRepository;
@@ -34,17 +36,49 @@ namespace OFI.Infrastructure.User
             throw new NotImplementedException();
         }
 
+        public async Task<bool> AddLoginComponent(LoginComponent loginComponent)
+        {
+            logger.LogInformation($"START function : {nameof(AddLoginComponent)} ");
+            try
+            {
+                var query = "INSERT INTO LoginComponent (UserName, IdUser, Salt, PasswordHash) VALUES (@userName, @idUser, @salt, @passwordHash)";
+                var newLoginComponet = await dbConnection.ExecuteAsync(query, new { userName = loginComponent.UserName, idUser = loginComponent.IdUser, salt = loginComponent.Salt, passwordHash = loginComponent.PasswordHash});
+                return newLoginComponet > 0;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in funciton {nameof(AddLoginComponent)}. More information: {ex.Message}");
+                throw;
+            }
+        }
+
         public async Task AddTaskToUser(TaskMessage taskMessage)
         {
             logger.LogInformation($"START function : {nameof(AddTaskToUser)} ");
             try
             {
-                const string query = "INSERT INTO UsersTask (id_user, id_task) VALUES (@UserId, @TaskId); ";
+                const string query = "INSERT INTO UsersTask (id_user, id_task) VALUES (@UserId, @TaskId)";
                 await dbConnection.ExecuteAsync(query, new { UserId = taskMessage.UserId, TaskId = taskMessage.TaskId });
             }
             catch (Exception ex)
             {
                 logger.LogError($"Error in funciton {nameof(AddTaskToUser)}. More information: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<long?> AddUserToApplication(UserAggregate user)
+        {
+            logger.LogInformation($"START function : {nameof(AddUserToApplication)} ");
+            try
+            {
+                var query = "INSERT INTO Users (Email, FirstName, LastName, CreatedAt) VALUES (@email, @firstName, @lastName, @createdAt)";
+                long? result = await dbConnection.ExecuteAsync(query, new { email = user.Email, firstName = user.FirstName, lastName = user.LastName, createdAt = user.CreateAt});
+                return result;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in funciton {nameof(AddUserToApplication)}. More information: {ex.Message}");
                 throw;
             }
         }
@@ -67,7 +101,16 @@ namespace OFI.Infrastructure.User
 
         public Task<Core.Entities.User.UserAggregate> GetByUsernameAsync(string username)
         {
-            throw new NotImplementedException();
+            logger.LogInformation($"START function : {nameof(GetByUsernameAsync)} ");
+            try
+            {
+                throw new NotImplementedException();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in funciton {nameof(GetByUsernameAsync)}. More information: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<IEnumerable<UserAggregate>> GetUserDashboardDTOsAsync()
@@ -101,6 +144,24 @@ namespace OFI.Infrastructure.User
             catch (Exception ex)
             {
                 logger.LogError($"Error in funciton {nameof(GetUsersToFiltr)}. More information: {ex.Message}");
+                throw;
+            }
+        }
+
+        public async Task<LoginComponent> LogToApplication(string userName)
+        {
+            logger.LogInformation($"START function : {nameof(LogToApplication)} ");
+            try
+            {
+                var query = "SELECT * from LoginComponent where UserName = @name";
+
+                LoginComponent loginComponent = await dbConnection.QuerySingleOrDefaultAsync<LoginComponent>(query, new { name = userName });
+
+                return loginComponent;
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in funciton {nameof(LogToApplication)}. More information: {ex.Message}");
                 throw;
             }
         }
