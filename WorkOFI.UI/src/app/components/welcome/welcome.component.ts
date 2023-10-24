@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { UserService } from 'src/app/user.service';
+import { LoginComponentModel } from 'src/app/models/loginComponent.model';
+import { RegisterLoginComponentModel } from 'src/app/models/registerLoginComponents';
 
 @Component({
     selector: 'app-welcome',
@@ -6,23 +10,47 @@ import { Component } from '@angular/core';
     styleUrls: ['./welcome.component.css']
 })
 export class WelcomeComponent {
+
+    constructor(private userService: UserService, private router : Router){}
+
     showLogin = true;
 
-    // Dane logowania
     loginUsername = '';
     loginPassword = '';
 
-    // Dane rejestracji
+    registerFirstName = '';
+    registerLastName = '';
+    registerEmail = '';
     registerUsername = '';
     registerPassword = '';
     confirmPassword = '';
 
     handleLogin() {
-        // Tutaj obsługuje logowanie
+        const loginData = new LoginComponentModel(this.loginUsername, this.loginPassword);
+
+        this.userService.loginToApplication(loginData).subscribe(result => {
+            if (result) {
+                this.router.navigate(['/dashboard']);
+            }
+            
+            alert('Inncorect login or password!');
+        });
     }
 
     handleRegister() {
-        // Tutaj obsługuje rejestrację
+        if (this.registerPassword !== this.confirmPassword) {
+            alert('Password is not this same');
+            return;
+        }
+
+        const registerData = new RegisterLoginComponentModel(this.registerFirstName, this.registerLastName, this.registerUsername, this.registerPassword, this.registerEmail);
+
+        this.userService.registerToApplication(registerData).subscribe(result => {
+            if (result) {
+                this.showLogin = true;
+            }
+            alert('Inncorect data!');
+        });
     }
 
     switchToRegister() {

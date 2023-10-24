@@ -1,12 +1,15 @@
-﻿using Core.Application.Dtos;
+﻿using Core.Application.Commands.Users;
+using Core.Application.Dtos;
 using Core.Application.Queries;
 using Core.Application.Queries.Users;
+using Core.Authorization.Dtos;
 using Core.Dtos;
 using Core.Entities.User;
 using Core.Enums;
 using Core.InterfaceRepository;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using OFI.Infrastructure.User.Handlers.Users.Commands;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -26,6 +29,52 @@ namespace OFI.UserService.Api.Controllers
             this.logger = _logger;
         }
 
+        [HttpPost("auth/login")]
+        public async Task<IActionResult> Login([FromBody] LoginComponentDTO loginComponentDTO)
+        {
+            logger.LogInformation($"{nameof(Login)} function just started");
+            try
+            {
+                if (String.IsNullOrEmpty(loginComponentDTO.Login) || String.IsNullOrEmpty(loginComponentDTO.Password))
+                {
+                    logger.LogError($"Error in {nameof(Login)} login or password is empty.");
+                    return Unauthorized("Bad login or password");
+                }
+
+                var command = new LoginToApplicationCommand(loginComponentDTO);
+                var result = await mediator.Send(command); //TODO Change to token name
+
+                if(result is null)
+                {
+                    return Unauthorized("Bad login or password!");
+                }
+
+                return Ok(); //TODO Return JWT hear
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in {nameof(Login)} with detail error : {ex.Message} ");
+                return Unauthorized();
+            }
+        }
+
+        [HttpPost("auth/register")]
+        public async Task<IActionResult> RegisterUser([FromBody] RegisterLoginComponentDTO registerLoginComponentDTO)
+        {
+            logger.LogInformation($"{nameof(RegisterUser)} function just started");
+            try
+            {
+                var command = new RegisterToApplicationCommand(registerLoginComponentDTO);
+                var result = await mediator.Send(command);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                logger.LogError($"Error in {nameof(RegisterUser)} with detail error : {ex.Message} ");
+                return Unauthorized();
+            }
+        }
+
         [HttpGet("users/search")]
         public async Task<ActionResult<IEnumerable<UserDashboardDTO>>> SearchUserForFiltr([FromQuery] string characters)
         {
@@ -39,7 +88,8 @@ namespace OFI.UserService.Api.Controllers
                 }
                 else
                 {
-                    if(!Regex.IsMatch(characters, @"^[a-zA-Z]+$")) {
+                    if (!Regex.IsMatch(characters, @"^[a-zA-Z]+$"))
+                    {
                         logger.LogError($"{nameof(SearchUserForFiltr)} only letters in charcters");
                         return BadRequest("Only letters please in characters");
                     }
@@ -47,10 +97,10 @@ namespace OFI.UserService.Api.Controllers
                     var query = new GetUsersByFiltrQuery(characters);
                     var users = await mediator.Send(query);
 
-                    return Ok(users);   
+                    return Ok(users);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 logger.LogError($"Error in {nameof(SearchUserForFiltr)} with detail error : {ex.Message} ");
                 return BadRequest();

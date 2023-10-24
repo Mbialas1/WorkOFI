@@ -1,4 +1,6 @@
-﻿using Core.Dtos;
+﻿using Core.Authorization.Dtos;
+using Core.Authorization.Models;
+using Core.Dtos;
 using Core.Entities.User;
 using OFI.Infrastructure.User.RabbitMQ.Models;
 using System;
@@ -17,5 +19,8 @@ namespace Core.InterfaceRepository
         Task AddAsync(UserAggregate user);
         Task<IEnumerable<UserAggregate>> GetUsersToFiltr(string characters);
         Task AddTaskToUser(TaskMessage taskMessage);
+        Task<LoginComponent> LogToApplication(string userName);
+        Task<long?> AddUserToApplication(UserAggregate user);
+        Task<bool> AddLoginComponent(LoginComponent loginComponent);
     }
 }
